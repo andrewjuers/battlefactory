@@ -26,6 +26,7 @@ export function TeamBuilder() {
                     .then((response) => {
                         pokemonData[i] = response.data;
                         pokemonData[i].moveset = [{ name: "Tackle" }];
+                        pokemonData[i].hp = [1, 1];
                         pokemonData[i].base_stats = baseStatTotalTo600(
                             pokemonData[i]
                         );
@@ -44,6 +45,7 @@ export function TeamBuilder() {
                     )
                     .then((response) => {
                         opponentData[i] = response.data;
+                        opponentData[i].hp = [1, 1];
                         opponentData[i].base_stats = baseStatTotalTo600(
                             opponentData[i]
                         );

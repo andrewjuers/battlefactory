@@ -1,6 +1,7 @@
 import { CurrentPokemon } from "components/CurrentPokemon";
 import { Move } from "components/Move";
 import { PokemonParty } from "components/PokemonParty";
+import { damageCalc } from "shared";
 import './Battle.css';
 
 export function Battle(props) {
@@ -18,7 +19,8 @@ export function Battle(props) {
     })
 
     function doMove(move) {
-        console.log(move)
+        let damage = damageCalc(props.playerPokemon[0], props.opponentPokemon[0], move);
+        console.log("DAMAGE: ", damage);
     }
 
     return (

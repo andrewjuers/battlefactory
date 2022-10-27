@@ -15,13 +15,14 @@ export function Move(props) {
                 <button
                     className="move-button"
                     id={props.move.type.name}
+                    onClick={() => props.onClick(props.move)}
                     onMouseOver={(e) => {
                         setStyle({ display: "table" });
                     }}
                     onMouseOut={(e) => {
                         setStyle({ display: "none" });
                     }}
-                    onClick={props.onClick(props.move)}
+                   
                 >
                     <p>{props.move.name}</p>
                     <p>{props.move.type.name}</p>

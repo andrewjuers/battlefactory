@@ -264,9 +264,11 @@ export class PogeyData {
         let weak = [];
         let strong = [];
         let none = [];
-        let type1 = PogeyData.types.get(capitalizeFirstLetter(types[0].type.name));
+        let type1 = PogeyData.types.get(
+            capitalizeFirstLetter(types[0].type.name)
+        );
         let type2 =
-            types.length > 1 ? PogeyData.types.get(types[1].type.name) : [];
+            types.length > 1 ? PogeyData.types.get(capitalizeFirstLetter(types[1].type.name)) : [];
 
         // Get weaknesses, resists, and immunities
         if (types.length > 1) {
@@ -408,6 +410,27 @@ export class PogeyData {
     static isSuperEffective(selected, types, ability = "") {
         let weak = this.getTypeResults(types, ability)[0];
         return weak.includes(capitalizeFirstLetter(selected));
+    }
+
+    static getMoveResult(move, pokemon, ability = "") {
+        let typeChart = this.getTypeResults(pokemon.types, ability);
+        let wCounts = new Map();
+        let rCounts = new Map();
+
+        // Determine effectiveness multipliers
+        typeChart[0].sort().forEach((t) => {
+            wCounts.set(t, (wCounts.has(t) ? wCounts.get(t) * 2 : 2));
+        });
+        typeChart[1].sort().forEach((t) => {
+            rCounts.set(t, (rCounts.has(t) ? rCounts.get(t) * 0.5 : 0.5));
+        });
+        // Pokemon is immune
+        if (typeChart[2].includes(capitalizeFirstLetter(move.type.name))) return 0;
+        // Super effective
+        if (wCounts.get(capitalizeFirstLetter(move.type.name)) !== undefined) return wCounts.get(capitalizeFirstLetter(move.type.name));
+        // Resist
+        if (rCounts.get(capitalizeFirstLetter(move.type.name)) !== undefined) return rCounts.get(capitalizeFirstLetter(move.type.name));
+        return 1;
     }
 }
 
