@@ -1,0 +1,6 @@
+.hover-pokemon-div {
+    display: table;
+    position: absolute;
+    background-color: azure;
+    width: auto;
+}

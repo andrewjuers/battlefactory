@@ -1,0 +1,16 @@
+.pokemon {
+    display: table;
+}
+
+.selected-pokemon-row {
+    display: flex;
+}
+
+.selected-pokemon-row::after {
+    content: "";
+    clear: both;
+}
+
+.pokemon-img {
+    object-fit: contain;
+}

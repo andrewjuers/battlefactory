@@ -1,0 +1,20 @@
+.battle {
+
+}
+
+.pokemon-grid {
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+.opponent {
+    float: right;
+}
+
+.player {
+    float: left;
+}
+
+.pokemon-moves {
+    display: flex;
+}
