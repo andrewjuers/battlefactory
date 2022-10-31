@@ -10,3 +10,5 @@ export * from './HealthBar';
 export * from './Move';
 export * from './HoverPokemonData';
 export * from './PokemonPartyMember';
+export * from './TurnDetails';
+export * from './TurnFeed';

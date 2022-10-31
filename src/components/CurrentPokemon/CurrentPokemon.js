@@ -15,7 +15,7 @@ export function CurrentPokemon(props) {
             setStyle({display: 'none'});
         }}>
             <HealthBar 
-                label="" value={100} maxValue={100}
+                label="" value={props.pokemon.hp[0]} maxValue={props.pokemon.hp[1]}
             />
             <img src={props.img} alt=""></img>
             <div style={style} className="display-hover-pokemon-div">

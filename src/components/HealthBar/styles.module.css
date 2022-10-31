@@ -5,7 +5,7 @@
     padding: 5px;
     align-items: center;
     background-color: white;
-    width: 150px;
+    width: 200px;
 }
 
 .label {
@@ -30,5 +30,5 @@
 .value {
     height: 100%;
     background-color: rgb(25, 225, 25);
-    transition: 0.35s;
+    transition: 1s;
 }

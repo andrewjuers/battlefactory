@@ -1,26 +1,47 @@
 import { CurrentPokemon } from "components/CurrentPokemon";
 import { Move } from "components/Move";
 import { PokemonParty } from "components/PokemonParty";
-import { damageCalc } from "shared";
+import { TurnFeed } from "components/TurnFeed";
+import { useState } from "react";
+import { doTurn } from "shared";
 import './Battle.css';
 
 export function Battle(props) {
-    console.log(props.playerPokemon[0])
+
+    const [turns, setTurns] = useState([]);
 
     let moves = props.playerPokemon[0].moveset.map((move, index) => {
         return (
             <div key={index}>
                 <Move 
                     move={move}
-                    onClick={doMove}
+                    onClick={nextTurn}
                 />
             </div>
         )
     })
 
-    function doMove(move) {
-        let damage = damageCalc(props.playerPokemon[0], props.opponentPokemon[0], move);
-        console.log("DAMAGE: ", damage);
+    // function doMove(move) {
+    //     let damage = damageCalc(props.playerPokemon[0], props.opponentPokemon[0], move);
+    //     let pokemon = [...props.opponentPokemon];
+    //     pokemon[0].hp[0] = pokemon[0].hp[0] - damage < 0 ? 0 : pokemon[0].hp[0] - damage;
+    //     props.updateOpponentPokemon(pokemon);
+    //     let message = props.playerPokemon[0].name + " used " + move.name + "!";
+    //     setTurns(message);
+    //     let t = [...turns];
+    //     t.push(message);
+    //     setTurns(t);
+    // }
+
+    function nextTurn(move) {
+        let text = doTurn(props.playerPokemon, props.opponentPokemon, move);
+        let texts = "";
+        for (const t of text) {
+            texts = texts + t;
+        }
+        let t = [...turns];
+        t.push(text);
+        setTurns(t);
     }
 
     return (
@@ -49,6 +70,11 @@ export function Battle(props) {
                     />
                 </div>
                 <div></div>
+            </div>
+            <div className="turn-feed">
+                <TurnFeed
+                    turns={turns}
+                />
             </div>
         </div>
     );

@@ -1,6 +1,6 @@
 import { PokemonOptions } from "components/PokemonOptions";
 import { useState, useEffect } from "react";
-import { generateRandomPokemonId } from "shared";
+import { generateRandomPokemonId, hpCalc } from "shared";
 import axios from "axios";
 import "./TeamBuilder.css";
 import { SelectedPokemon } from "components";
@@ -26,10 +26,13 @@ export function TeamBuilder() {
                     .then((response) => {
                         pokemonData[i] = response.data;
                         pokemonData[i].moveset = [{ name: "Tackle" }];
-                        pokemonData[i].hp = [1, 1];
                         pokemonData[i].base_stats = baseStatTotalTo600(
                             pokemonData[i]
                         );
+                        pokemonData[i].hp = [
+                            hpCalc(pokemonData[i].base_stats[0]),
+                            hpCalc(pokemonData[i].base_stats[0]),
+                        ];
                         setPokemonOptions(pokemonData);
                         createMoveset(pokemonData, i, setPokemonOptions);
                     });
@@ -45,10 +48,13 @@ export function TeamBuilder() {
                     )
                     .then((response) => {
                         opponentData[i] = response.data;
-                        opponentData[i].hp = [1, 1];
                         opponentData[i].base_stats = baseStatTotalTo600(
                             opponentData[i]
                         );
+                        opponentData[i].hp = [
+                            hpCalc(opponentData[i].base_stats[0]),
+                            hpCalc(opponentData[i].base_stats[0]),
+                        ];
                         setOpponentPokemon(opponentData);
                         createMoveset(opponentData, i, setOpponentPokemon);
                     });
@@ -77,6 +83,14 @@ export function TeamBuilder() {
         let temp = moves.slice(0, 4);
         pokemonData[index].moveset = temp;
         setFunc(pokemonData);
+    }
+
+    function updatePlayerPokemon(pokemon) {
+        setPlayerPokemon(pokemon);
+    }
+
+    function updateOpponentPokemon(pokemon) {
+        setOpponentPokemon(pokemon);
     }
 
     function selectPokemon() {
@@ -114,6 +128,8 @@ export function TeamBuilder() {
                 <Battle
                     opponentPokemon={opponentPokemon}
                     playerPokemon={playerPokemon}
+                    updatePlayerPokemon={updatePlayerPokemon}
+                    updateOpponentPokemon={updateOpponentPokemon}
                 />
             </div>
         );
@@ -127,10 +143,20 @@ export function TeamBuilder() {
                         <SelectedPokemon pokemon={selectedPokemon} />
                         {playerPokemon.length < 3 &&
                             playerPokemon.indexOf(selectedPokemon) === -1 && (
-                                <button className="select-pokemon" onClick={selectPokemon}>Select</button>
+                                <button
+                                    className="select-pokemon"
+                                    onClick={selectPokemon}
+                                >
+                                    Select
+                                </button>
                             )}
                         {playerPokemon.indexOf(selectedPokemon) >= 0 && (
-                            <button className="select-pokemon" onClick={deselectPokemon}>Deselect</button>
+                            <button
+                                className="select-pokemon"
+                                onClick={deselectPokemon}
+                            >
+                                Deselect
+                            </button>
                         )}
                     </div>
                 )}
