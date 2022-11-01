@@ -5,6 +5,7 @@
 .move-info-div {
     position: absolute;
     background-color: antiquewhite;
+    z-index: 100;
 }
 
 .move-button {

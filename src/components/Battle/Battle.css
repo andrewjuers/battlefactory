@@ -1,5 +1,5 @@
 .battle {
-    
+    display: table;
 }
 
 .pokemon-grid {
@@ -20,13 +20,8 @@
     display: flex;
 }
 
-.textbox-div {
-    display: table;
-    width: 300px;
-    height: auto;
-    border: 2px solid black;
-}
-
 .turn-feed {
+    height: 600px;
     float: right;
+    border: 2px solid black;
 }

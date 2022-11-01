@@ -1,0 +1,7 @@
+.turn-feed-div {
+    position: relative;
+    display: table;
+    width: 500px;
+    height: 600px;
+    background-color: rgb(240, 240, 255);
+}

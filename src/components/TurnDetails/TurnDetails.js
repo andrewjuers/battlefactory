@@ -1,9 +1,7 @@
-import { useTypedMessage } from 'hooks';
 import './TurnDetails.css';
 
 export function TurnDetails(props) {
 
-    //const typedMessage = useTypedMessage(props.details)
     const typedMessages = props.details.map((d, i) => {
         return (
             <p key={i}>{d}</p>

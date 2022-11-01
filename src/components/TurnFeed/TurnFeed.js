@@ -1,4 +1,5 @@
 import { TurnDetails } from 'components/TurnDetails';
+import ScrollableFeed from 'react-scrollable-feed';
 import './TurnFeed.css';
 
 export function TurnFeed(props) {
@@ -11,11 +12,13 @@ export function TurnFeed(props) {
                 details={t}
             />
         )
-    })
+    });
 
     return(
-        <div>
-            {turns}
+        <div className="turn-feed-div">
+            <ScrollableFeed forceScroll={true}>
+                {turns}
+            </ScrollableFeed>
         </div>
-    )
+    );
 }

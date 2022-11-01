@@ -3,4 +3,5 @@
     position: absolute;
     background-color: azure;
     width: auto;
+    z-index: 100;
 }
