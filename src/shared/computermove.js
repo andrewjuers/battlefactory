@@ -9,3 +9,13 @@ export function makeMove(playerTeam, opponentTeam) {
     }
     return choice;
 }
+
+export function switchPokemon(opponentTeam) {
+    if (opponentTeam[1].hp[0] > 0) {
+        return 1
+    }
+    else if (opponentTeam[2].hp[0] > 0){
+        return 2
+    }
+    else return -1
+}

@@ -2,22 +2,42 @@ import { CurrentPokemon } from "components/CurrentPokemon";
 import { Move } from "components/Move";
 import { PokemonParty } from "components/PokemonParty";
 import { TurnFeed } from "components/TurnFeed";
-import { useState } from "react";
-import { doTurn } from "shared";
+import { useEffect, useState } from "react";
+import { doSwitch, doTurn, switchPokemon } from "shared";
 import "./Battle.css";
 
 export function Battle(props) {
     const [turns, setTurns] = useState([]);
+    const [isForceSwitch, setForceSwitch] = useState(false);
 
-    let moves = props.playerPokemon[0].moveset.map((move, index) => {
-        return (
-            <div key={index}>
-                <Move move={move} onClick={nextTurn} />
-            </div>
-        );
-    });
+    useEffect(() => {
+        if (isForceSwitch === false) return;
+        if (props.opponentPokemon[0].hp[0] === 0) {
+            let switch_index = switchPokemon(props.opponentPokemon);
+            if (switch_index === -1) {
+                alert("You win!");
+                return;
+            }
+            updateTurnText(doSwitch(
+                props.opponentPokemon,
+                switchPokemon(props.opponentPokemon)
+            ));
+            setForceSwitch(false);
+        }
+        if (props.playerPokemon[0].hp[0] === 0) {
+            let playing = false;
+            for (const poke of props.playerPokemon) {
+                if (poke.hp[0] > 0) playing = true;
+            }
+            if (!playing) alert("You lose!");
+        }
+    }, [isForceSwitch]);
 
     function nextTurn(move) {
+        if (isForceSwitch) {
+            alert("Pick a pokemon to switch into!");
+            return;
+        }
         let text = doTurn(props.playerPokemon, props.opponentPokemon, move);
         let texts = "";
         for (const t of text) {
@@ -26,7 +46,33 @@ export function Battle(props) {
         let t = [...turns];
         t.push(text);
         setTurns(t);
+        if (
+            props.playerPokemon[0].hp[0] === 0 ||
+            props.opponentPokemon[0].hp[0] === 0
+        )
+            setForceSwitch(true);
     }
+
+    function onSwitch(index) {
+        if (isForceSwitch) {
+            updateTurnText(doSwitch(props.playerPokemon, index));
+            setForceSwitch(false);
+        }
+    }
+
+    function updateTurnText(text) {
+        let t = [...turns];
+        t[t.length-1].push(text);
+        setTurns(t);
+    }
+
+    let moves = props.playerPokemon[0].moveset.map((move, index) => {
+        return (
+            <div key={index}>
+                <Move move={move} onClick={nextTurn} />
+            </div>
+        );
+    });
 
     return (
         <div className="battle">
@@ -45,7 +91,10 @@ export function Battle(props) {
                         img={props.playerPokemon[0].sprites.back_default}
                     />
                     <div className="pokemon-moves">{moves}</div>
-                    <PokemonParty pokemon={props.playerPokemon} />
+                    <PokemonParty
+                        pokemon={props.playerPokemon}
+                        onClick={onSwitch}
+                    />
                 </div>
                 <div></div>
             </div>

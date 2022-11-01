@@ -1,4 +1,14 @@
 .turn-div {
     border: 2px solid slategrey;
     overflow-y: auto;
+    padding-left: 5px;
+}
+
+.turn-heading {
+    margin-top: -2px;
+    margin-bottom: -5px;
+}
+
+.turn-messages {
+    margin-top: -10px;
 }

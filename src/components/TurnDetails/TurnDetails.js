@@ -10,8 +10,10 @@ export function TurnDetails(props) {
 
     return (
         <div className="turn-div">
-            <h1>Turn {props.turn}</h1>
-            {typedMessages}
+            <h2 className="turn-heading">Turn {props.turn}</h2>
+            <div className="typed-messages">
+                {typedMessages}
+            </div>
         </div>
     )
 }

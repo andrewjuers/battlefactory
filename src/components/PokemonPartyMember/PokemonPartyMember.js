@@ -13,7 +13,7 @@ export function PokemonPartyMember(props) {
         onMouseOut={e => {
             setStyle({display: 'none'});
         }}>
-            <button><img src={props.pokemon.sprites.front_default} alt={props.pokemon.name}></img></button>
+            <button disabled={props.pokemon.hp[0] === 0} onClick={() => {props.onClick(props.index)}}><img src={props.pokemon.sprites.front_default} alt={props.pokemon.name}></img></button>
             <div style={style}>
                 <HoverPokemonData pokemon={props.pokemon} />
             </div>
