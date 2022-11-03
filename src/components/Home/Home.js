@@ -20,15 +20,13 @@ export function Home() {
         for (let i = 0; i < 3; i++) {
             createRandomPokemon(opponentPokemon, i, setOpponentPokemon);
         }
-        return () => {
-            setTimeout(() => {
-                setApiLoading(false);
-            }, 5000);
-        };
+        setTimeout(() => {
+            setApiLoading(false);
+        }, 5000);
     }, []);
 
     async function createRandomPokemon(pokemonData, i, setFunc) {
-        setTimeout(() => {
+        await setTimeout(() => {
             axios
                 .get(
                     "https://pokeapi.co/api/v2/pokemon/" +
@@ -57,15 +55,29 @@ export function Home() {
             await axios.get(move.url).then((response) => {
                 if (
                     response.data.damage_class.name !== "status" &&
-                    response.data.power
+                    response.data.power &&
+                    (response.data.power > 50 || response.data.priority > 0) &&
+                    BANNED_MOVES.includes(response.data.name) === false
                 )
                     moves.push(response.data);
             });
         }
+        if (moves.length < 4) moves.push(
+            {name: "tackle",
+            damage_class: {name: "physical"},
+            power: 50,
+            priority: 0,
+            pp: 100,
+            effect_entries: [{effect: "Does normal damage; tackle."}],
+            flavor_text_entries: [{flavor_text: "Why"}, {flavor_text: "Bad move"}],
+            type: {name: "normal"},
+            accuracy: 100,
+        });
         shuffle(moves);
         let temp = moves.slice(0, 4);
         pokemonArr[index].moveset = temp;
         setFunc(pokemonArr);
+        console.log("hi");
     }
 
     if (isApiLoading) {
@@ -79,7 +91,7 @@ export function Home() {
                     height: "100vh",
                 }}
             >
-                Loading the data {console.log("loading state")}
+                Loading the data... {console.log("loading state")}
             </div>
         );
     }
@@ -122,9 +134,9 @@ export function Home() {
                     />
                 </div>
             )}
-            {(battleFactoryState === "battle" && 
+            {battleFactoryState === "battle" && (
                 <div>
-                    <Battle 
+                    <Battle
                         playerPokemon={playerPokemon}
                         opponentPokemon={opponentPokemon}
                     />
@@ -169,3 +181,27 @@ function baseStatTotalTo600(pokemon) {
     }
     return temp;
 }
+
+const BANNED_MOVES = [
+    "dream-eater",
+    "dig",
+    "dive",
+    "fly",
+    "uproar",
+    "focus-punch",
+    "hyper-beam",
+    "giga-impact",
+    "sky-drop",
+    "skull-bash",
+    "steel-roller",
+    "dynamic-punch",
+    "belch",
+    "zap-cannon",
+    "solar-beam",
+    "petal-dance",
+    "burn-up",
+    "last-resort",
+    "sky-attack",
+    "thrash",
+
+];

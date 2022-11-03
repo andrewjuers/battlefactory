@@ -1,10 +1,6 @@
 import { PokemonOptions } from "components/PokemonOptions";
-import { useState, useEffect } from "react";
-import { generateRandomPokemonId, hpCalc } from "shared";
-import axios from "axios";
 import "./TeamBuilder.css";
 import { SelectedPokemon } from "components";
-import { Battle } from "components/Battle";
 
 export function TeamBuilder(props) {
 
