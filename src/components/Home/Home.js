@@ -62,22 +62,25 @@ export function Home() {
                     moves.push(response.data);
             });
         }
-        if (moves.length < 4) moves.push(
-            {name: "tackle",
-            damage_class: {name: "physical"},
-            power: 50,
-            priority: 0,
-            pp: 100,
-            effect_entries: [{effect: "Does normal damage; tackle."}],
-            flavor_text_entries: [{flavor_text: "Why"}, {flavor_text: "Bad move"}],
-            type: {name: "normal"},
-            accuracy: 100,
-        });
+        if (moves.length < 4)
+            moves.push({
+                name: "tackle",
+                damage_class: { name: "physical" },
+                power: 50,
+                priority: 0,
+                pp: 100,
+                effect_entries: [{ effect: "Does normal damage; tackle." }],
+                flavor_text_entries: [
+                    { flavor_text: "Why" },
+                    { flavor_text: "Bad move" },
+                ],
+                type: { name: "normal" },
+                accuracy: 100,
+            });
         shuffle(moves);
         let temp = moves.slice(0, 4);
         pokemonArr[index].moveset = temp;
         setFunc(pokemonArr);
-        console.log("hi");
     }
 
     if (isApiLoading) {
@@ -203,5 +206,6 @@ const BANNED_MOVES = [
     "last-resort",
     "sky-attack",
     "thrash",
-
+    "meteor-beam",
+    "steel-beam",
 ];

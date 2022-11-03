@@ -3,7 +3,6 @@ import "./TeamBuilder.css";
 import { SelectedPokemon } from "components";
 
 export function TeamBuilder(props) {
-
     const [
         pokemonOptions,
         setPokemonOptions,
@@ -67,7 +66,7 @@ export function TeamBuilder(props) {
                 {playerPokemon.length === 3 && (
                     <button
                         onClick={() => {
-                            setBattleFactoryState("battle")
+                            setBattleFactoryState("battle");
                         }}
                     >
                         I like this team!
@@ -77,5 +76,3 @@ export function TeamBuilder(props) {
         </div>
     );
 }
-
-

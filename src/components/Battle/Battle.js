@@ -9,6 +9,7 @@ import "./Battle.css";
 export function Battle(props) {
     const [turns, setTurns] = useState([]);
     const [isForceSwitch, setForceSwitch] = useState(false);
+    const [isWin, setWin] = useState(false);
 
     useEffect(() => {
         if (isForceSwitch === false) return;
@@ -18,10 +19,12 @@ export function Battle(props) {
                 alert("You win!");
                 return;
             }
-            updateTurnText(doSwitch(
-                props.opponentPokemon,
-                switchPokemon(props.opponentPokemon)
-            ));
+            updateTurnText(
+                doSwitch(
+                    props.opponentPokemon,
+                    switchPokemon(props.opponentPokemon)
+                )
+            );
             setForceSwitch(false);
         }
         if (props.playerPokemon[0].hp[0] === 0) {
@@ -57,12 +60,15 @@ export function Battle(props) {
         if (isForceSwitch) {
             updateTurnText(doSwitch(props.playerPokemon, index));
             setForceSwitch(false);
+        } else if (!isForceSwitch) {
+            let move = { priority: 6, index: index };
+            nextTurn(move);
         }
     }
 
     function updateTurnText(text) {
         let t = [...turns];
-        t[t.length-1].push(text);
+        t[t.length - 1].push(text);
         setTurns(t);
     }
 

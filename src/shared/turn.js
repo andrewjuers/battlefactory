@@ -2,43 +2,45 @@ import { makeMove } from "./computermove";
 import { damageCalc, typeEffectiveness } from "./damagecalc";
 
 export function doTurn(playerPokemon, opponentPokemon, move) {
-    let movefirst =
-        playerPokemon[0].base_stats[5] > opponentPokemon[0].base_stats[5]
-            ? true
-            : false;
-    let text = [];
     let cpuMove = makeMove(playerPokemon, opponentPokemon);
+    let movefirst = move.priority > cpuMove.priority ? true : false;
+    if (move.priority === cpuMove.priority) {
+        movefirst =
+            playerPokemon[0].base_stats[5] > opponentPokemon[0].base_stats[5]
+                ? true
+                : false;
+    }
+    let text = [];
     if (movefirst) {
         text = addArrayToArray(
             text,
-            turnText(playerPokemon[0], opponentPokemon[0], move)
+            playerTurn(playerPokemon, opponentPokemon, move)
         );
-        if (typeEffectiveness(move, opponentPokemon[0]) !== 0)
-            text = addArrayToArray(
-                text,
-                doAttack(playerPokemon[0], opponentPokemon[0], move)
-            );
         if (opponentPokemon[0].hp[0] === 0) return text;
         text = addArrayToArray(
             text,
-            turnText(opponentPokemon[0], playerPokemon[0], cpuMove)
+            playerTurn(opponentPokemon, playerPokemon, cpuMove)
         );
-        if (typeEffectiveness(cpuMove, playerPokemon[0]) !== 0)
-            text = addArrayToArray(
-                text,
-                doAttack(opponentPokemon[0], playerPokemon[0], cpuMove)
-            );
     } else {
         text = addArrayToArray(
             text,
-            turnText(opponentPokemon[0], playerPokemon[0], cpuMove)
+            playerTurn(opponentPokemon, playerPokemon, cpuMove)
         );
-        if (typeEffectiveness(cpuMove, playerPokemon[0]) !== 0)
-            text = addArrayToArray(
-                text,
-                doAttack(opponentPokemon[0], playerPokemon[0], cpuMove)
-            );
         if (playerPokemon[0].hp[0] === 0) return text;
+        text = addArrayToArray(
+            text,
+            playerTurn(playerPokemon, opponentPokemon, move)
+        );
+    }
+    return text;
+}
+
+export function playerTurn(playerPokemon, opponentPokemon, move) {
+    let text = [];
+    /// Move is switch
+    if (move.priority === 6) text.push(doSwitch(playerPokemon, move.index));
+    /// Move is attack
+    else {
         text = addArrayToArray(
             text,
             turnText(playerPokemon[0], opponentPokemon[0], move)
@@ -49,7 +51,6 @@ export function doTurn(playerPokemon, opponentPokemon, move) {
                 doAttack(playerPokemon[0], opponentPokemon[0], move)
             );
     }
-
     return text;
 }
 
@@ -100,7 +101,10 @@ export function doAttack(attacker, defender, move) {
 
 export function doSwitch(pokemon, index) {
     let oldCurrent = pokemon[0];
+    let text = "";
+    if (oldCurrent.hp[0] > 0) text = "Switch out " + oldCurrent.name + "! ";
     pokemon[0] = pokemon[index];
     pokemon[index] = oldCurrent;
-    return ("Go " + pokemon[0].name);
+    text = text + "Switch in " + pokemon[0].name + "!";
+    return text;
 }
