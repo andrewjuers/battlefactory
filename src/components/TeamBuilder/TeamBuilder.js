@@ -1,4 +1,4 @@
-import { PokemonOptions } from "components/PokemonOptions";
+import { PokemonOptions } from "components";
 import "./TeamBuilder.css";
 import { SelectedPokemon } from "components";
 

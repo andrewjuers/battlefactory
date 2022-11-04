@@ -1,6 +1,6 @@
 import axios from "axios";
-import { Battle } from "components/Battle";
-import { TeamBuilder } from "components/TeamBuilder";
+import { Battle } from "components";
+import { TeamBuilder } from "components";
 import { useEffect, useState } from "react";
 import { generateRandomPokemonId } from "shared";
 import { hpCalc } from "shared";
@@ -217,4 +217,6 @@ const BANNED_MOVES = [
     "steel-beam",
     "round",
     "future-sight", /// For now
+    "explosion",
+    "self-destruct",
 ];

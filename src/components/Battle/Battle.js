@@ -1,8 +1,8 @@
-import { CurrentPokemon } from "components/CurrentPokemon";
-import { GameOverDisplay } from "components/GameOverDisplay";
-import { Move } from "components/Move";
-import { PokemonParty } from "components/PokemonParty";
-import { TurnFeed } from "components/TurnFeed";
+import { CurrentPokemon } from "components";
+import { GameOverDisplay } from "components";
+import { Move } from "components";
+import { PokemonParty } from "components";
+import { TurnFeed } from "components";
 import { useEffect, useState } from "react";
 import { doSwitch, doTurn, switchPokemon } from "shared";
 import "./Battle.css";
@@ -11,13 +11,13 @@ export function Battle(props) {
     const [turns, setTurns] = useState([]);
     const [isForceSwitch, setForceSwitch] = useState(false);
     const [isGameOver, setGameOver] = useState(false);
+    const [isVictory, setVictory] = useState(null);
 
     useEffect(() => {
         if (isForceSwitch === false) return;
         if (props.opponentPokemon[0].hp[0] === 0) {
             let switch_index = switchPokemon(props.opponentPokemon);
             if (switch_index === -1) {
-                alert("You win!");
                 setGameOver(true);
                 return;
             }
@@ -35,18 +35,27 @@ export function Battle(props) {
                 if (poke.hp[0] > 0) playing = true;
             }
             if (!playing) {
-                alert("You lose!");
                 setGameOver(true);
             }
         }
     }, [isForceSwitch]);
 
+    useEffect(() => {
+        if (!isGameOver) return;
+        let [message, win] =
+            props.playerPokemon[0].hp[0] === 0
+                ? ["You Lose!", false]
+                : ["You Win!", true];
+        updateTurnText(message);
+        updateTurnText("Player2(CPU): GGWP!");
+        setVictory(win);
+    }, [isGameOver]);
+
     function nextTurn(move) {
         if (isGameOver) {
             alert("Game is over.");
             return;
-        }
-        else if (isForceSwitch) {
+        } else if (isForceSwitch) {
             alert("Pick a pokemon to switch into!");
             return;
         }
@@ -96,7 +105,13 @@ export function Battle(props) {
     return (
         <div className="battle">
             <div className="pokemon-grid">
-                <div></div>
+                <div>
+                    {isGameOver && (
+                        <div className="game-over">
+                            <GameOverDisplay win={isVictory} />
+                        </div>
+                    )}
+                </div>
                 <div className="opponent">
                     <PokemonParty pokemon={props.opponentPokemon} />
                     <CurrentPokemon
@@ -120,13 +135,6 @@ export function Battle(props) {
             <div className="turn-feed">
                 <TurnFeed turns={turns} />
             </div>
-            {(isGameOver && 
-                <div className="game-over">
-                    <GameOverDisplay 
-                        win={true}
-                    />
-                </div>    
-            )}
         </div>
     );
 }

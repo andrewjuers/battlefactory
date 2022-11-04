@@ -7,7 +7,7 @@ export function GameOverDisplay(props) {
     return (
         <div className="game-over-div">
             <h2>{message}</h2>
-            <button onClick={() => props.onClick()}>{button_text}</button>
+            <button className='game-over-button' onClick={() => props.onClick()}>{button_text}</button>
         </div>
     );
 }
