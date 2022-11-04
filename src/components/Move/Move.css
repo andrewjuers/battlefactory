@@ -9,10 +9,10 @@
 }
 
 .move-button {
-    width: 175px;
+    width: 125px;
     height: 75px;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 14px;
     outline: black solid 1px;
     border-radius: 4px;
     color: #222;

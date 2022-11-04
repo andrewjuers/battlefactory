@@ -14,8 +14,14 @@ export function Home() {
     const [battleFactoryState, setBattleFactoryState] = useState("home");
 
     useEffect(() => {
-        for (let i = 0; i < 6; i++) {
-            createRandomPokemon(pokemonOptions, i, setPokemonOptions);
+        loadNewPokemon();
+    }, []);
+
+    function loadNewPokemon(init = true) {
+        if (init) {
+            for (let i = 0; i < 6; i++) {
+                createRandomPokemon(pokemonOptions, i, setPokemonOptions);
+            }
         }
         for (let i = 0; i < 3; i++) {
             createRandomPokemon(opponentPokemon, i, setOpponentPokemon);
@@ -23,7 +29,7 @@ export function Home() {
         setTimeout(() => {
             setApiLoading(false);
         }, 5000);
-    }, []);
+    }
 
     async function createRandomPokemon(pokemonData, i, setFunc) {
         await setTimeout(() => {
@@ -72,7 +78,7 @@ export function Home() {
                 effect_entries: [{ effect: "Does normal damage; tackle." }],
                 flavor_text_entries: [
                     { flavor_text: "Why" },
-                    { flavor_text: "Bad move" },
+                    { flavor_text: "Bad move. Why are you reading this?" },
                 ],
                 type: { name: "normal" },
                 accuracy: 100,
@@ -201,6 +207,7 @@ const BANNED_MOVES = [
     "belch",
     "zap-cannon",
     "solar-beam",
+    "solar-blade",
     "petal-dance",
     "burn-up",
     "last-resort",
@@ -208,4 +215,6 @@ const BANNED_MOVES = [
     "thrash",
     "meteor-beam",
     "steel-beam",
+    "round",
+    "future-sight", /// For now
 ];

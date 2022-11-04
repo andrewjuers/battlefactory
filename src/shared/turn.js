@@ -65,9 +65,9 @@ export function turnText(attacker, defender, move) {
     ) {
         let t =
             typeEffectiveness(move, defender) > 1
-                ? "It's super effective!"
-                : "It's not very effective...";
-        text.push(t);
+                ? " It's super effective!"
+                : " It's not very effective...";
+        text[0] = text[0] + t;
     }
     return text;
 }

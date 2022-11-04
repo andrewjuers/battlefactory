@@ -1,4 +1,5 @@
 import { CurrentPokemon } from "components/CurrentPokemon";
+import { GameOverDisplay } from "components/GameOverDisplay";
 import { Move } from "components/Move";
 import { PokemonParty } from "components/PokemonParty";
 import { TurnFeed } from "components/TurnFeed";
@@ -9,7 +10,7 @@ import "./Battle.css";
 export function Battle(props) {
     const [turns, setTurns] = useState([]);
     const [isForceSwitch, setForceSwitch] = useState(false);
-    const [isWin, setWin] = useState(false);
+    const [isGameOver, setGameOver] = useState(false);
 
     useEffect(() => {
         if (isForceSwitch === false) return;
@@ -17,6 +18,7 @@ export function Battle(props) {
             let switch_index = switchPokemon(props.opponentPokemon);
             if (switch_index === -1) {
                 alert("You win!");
+                setGameOver(true);
                 return;
             }
             updateTurnText(
@@ -32,12 +34,19 @@ export function Battle(props) {
             for (const poke of props.playerPokemon) {
                 if (poke.hp[0] > 0) playing = true;
             }
-            if (!playing) alert("You lose!");
+            if (!playing) {
+                alert("You lose!");
+                setGameOver(true);
+            }
         }
     }, [isForceSwitch]);
 
     function nextTurn(move) {
-        if (isForceSwitch) {
+        if (isGameOver) {
+            alert("Game is over.");
+            return;
+        }
+        else if (isForceSwitch) {
             alert("Pick a pokemon to switch into!");
             return;
         }
@@ -57,6 +66,10 @@ export function Battle(props) {
     }
 
     function onSwitch(index) {
+        if (isGameOver) {
+            alert("Game is over.");
+            return;
+        }
         if (isForceSwitch) {
             updateTurnText(doSwitch(props.playerPokemon, index));
             setForceSwitch(false);
@@ -107,6 +120,13 @@ export function Battle(props) {
             <div className="turn-feed">
                 <TurnFeed turns={turns} />
             </div>
+            {(isGameOver && 
+                <div className="game-over">
+                    <GameOverDisplay 
+                        win={true}
+                    />
+                </div>    
+            )}
         </div>
     );
 }

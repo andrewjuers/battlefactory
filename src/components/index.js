@@ -13,3 +13,4 @@ export * from './PokemonPartyMember';
 export * from './TurnDetails';
 export * from './TurnFeed';
 export * from './Home';
+export * from './GameOverDisplay';
