@@ -4,6 +4,7 @@ import { TeamBuilder } from "components";
 import { useEffect, useState } from "react";
 import { generateRandomPokemonId } from "shared";
 import { hpCalc } from "shared";
+import { BANNED_MOVES, DEFAULT_MOVES } from "shared";
 
 export function Home() {
     const [isApiLoading, setApiLoading] = useState(true);
@@ -68,21 +69,11 @@ export function Home() {
                     moves.push(response.data);
             });
         }
-        if (moves.length < 4)
-            moves.push({
-                name: "tackle",
-                damage_class: { name: "physical" },
-                power: 50,
-                priority: 0,
-                pp: 100,
-                effect_entries: [{ effect: "Does normal damage; tackle." }],
-                flavor_text_entries: [
-                    { flavor_text: "Why" },
-                    { flavor_text: "Bad move. Why are you reading this?" },
-                ],
-                type: { name: "normal" },
-                accuracy: 100,
-            });
+        if (moves.length < 4) {
+            let choices = [...DEFAULT_MOVES];
+            shuffle(choices);
+            moves = [...moves, ...choices.slice(0, 4-moves.length)];
+        }
         shuffle(moves);
         let temp = moves.slice(0, 4);
         pokemonArr[index].moveset = temp;
@@ -139,6 +130,7 @@ export function Home() {
                             playerPokemon,
                             setPlayerPokemon,
                             setBattleFactoryState,
+                            loadNewPokemon,
                         ]}
                     />
                 </div>
@@ -190,33 +182,3 @@ function baseStatTotalTo600(pokemon) {
     }
     return temp;
 }
-
-const BANNED_MOVES = [
-    "dream-eater",
-    "dig",
-    "dive",
-    "fly",
-    "uproar",
-    "focus-punch",
-    "hyper-beam",
-    "giga-impact",
-    "sky-drop",
-    "skull-bash",
-    "steel-roller",
-    "dynamic-punch",
-    "belch",
-    "zap-cannon",
-    "solar-beam",
-    "solar-blade",
-    "petal-dance",
-    "burn-up",
-    "last-resort",
-    "sky-attack",
-    "thrash",
-    "meteor-beam",
-    "steel-beam",
-    "round",
-    "future-sight", /// For now
-    "explosion",
-    "self-destruct",
-];

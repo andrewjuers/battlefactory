@@ -4,3 +4,8 @@ export * from './pogey';
 export * from './damagecalc';
 export * from './computermove';
 export * from './turn';
+export * from './damagecalc';
+export * from './helpers';
+export * from './legalmoves';
+export * from './pogey';
+export * from './randompokemon';

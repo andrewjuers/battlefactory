@@ -13,6 +13,7 @@ export function TeamBuilder(props) {
         playerPokemon,
         setPlayerPokemon,
         setBattleFactoryState,
+        loadNewPokemon,
     ] = props.properties;
 
     function selectPokemon() {
@@ -71,6 +72,12 @@ export function TeamBuilder(props) {
                     >
                         I like this team!
                     </button>
+                )}
+                {playerPokemon.length < 3 && (
+                    <button
+                        onClick={() => {
+                            loadNewPokemon()
+                        }}>REROLL!!!</button>
                 )}
             </div>
         </div>
