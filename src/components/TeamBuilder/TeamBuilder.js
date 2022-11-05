@@ -5,9 +5,6 @@ import { SelectedPokemon } from "components";
 export function TeamBuilder(props) {
     const [
         pokemonOptions,
-        setPokemonOptions,
-        opponentPokemon,
-        setOpponentPokemon,
         selectedPokemon,
         setSelectedPokemon,
         playerPokemon,

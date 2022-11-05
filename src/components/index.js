@@ -14,3 +14,4 @@ export * from './TurnDetails';
 export * from './TurnFeed';
 export * from './Home';
 export * from './GameOverDisplay';
+export * from './PokemonSwap';

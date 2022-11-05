@@ -1,10 +1,12 @@
 import axios from "axios";
 import { Battle } from "components";
 import { TeamBuilder } from "components";
+import { PokemonSwap } from "components";
 import { useEffect, useState } from "react";
 import { generateRandomPokemonId } from "shared";
 import { hpCalc } from "shared";
 import { BANNED_MOVES, DEFAULT_MOVES } from "shared";
+import { wait } from "shared";
 
 export function Home() {
     const [isApiLoading, setApiLoading] = useState(true);
@@ -13,10 +15,39 @@ export function Home() {
     const [selectedPokemon, setSelectedPokemon] = useState(null);
     const [playerPokemon, setPlayerPokemon] = useState([]);
     const [battleFactoryState, setBattleFactoryState] = useState("home");
+    const [winStreak, setWinStreak] = useState(0);
 
     useEffect(() => {
         loadNewPokemon();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        if (isApiLoading) return;
+        /// glitchy
+        setSelectedPokemon(null);
+        /// Pokemon Center :)
+        let [temp, dumb] = [[...playerPokemon], [...opponentPokemon]];
+        for (const arr of [temp, dumb]) {
+            for (const poke of arr) poke.hp[0] = poke.hp[1];
+        }
+        setPlayerPokemon(temp);
+        setOpponentPokemon(dumb);
+        /// Update winstreak
+        if (battleFactoryState === "swap") setWinStreak(winStreak + 1);
+        else if (battleFactoryState === "teambuild" && playerPokemon.length > 0) {
+            setWinStreak(0);
+            setPlayerPokemon([]);
+            loadNewPokemon();
+        }
+        /// New opponent pokemon
+        if (winStreak > 0 && battleFactoryState !== "swap" && battleFactoryState === "battle") loadNewPokemon(false);
+        /// Load
+        (async () => {
+            await wait(2500);
+        })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [battleFactoryState]);
 
     function loadNewPokemon(init = true) {
         if (init) {
@@ -59,6 +90,7 @@ export function Home() {
         let moves = [];
         for (const m of pokemonArr[index].moves) {
             let move = m.move;
+            // eslint-disable-next-line
             await axios.get(move.url).then((response) => {
                 if (
                     response.data.damage_class.name !== "status" &&
@@ -72,7 +104,7 @@ export function Home() {
         if (moves.length < 4) {
             let choices = [...DEFAULT_MOVES];
             shuffle(choices);
-            moves = [...moves, ...choices.slice(0, 4-moves.length)];
+            moves = [...moves, ...choices.slice(0, 4 - moves.length)];
         }
         shuffle(moves);
         let temp = moves.slice(0, 4);
@@ -108,6 +140,7 @@ export function Home() {
                         height: "100vh",
                     }}
                 >
+                    <h1>Battle Factory</h1>
                     <button
                         onClick={() => {
                             setBattleFactoryState("teambuild");
@@ -122,9 +155,6 @@ export function Home() {
                     <TeamBuilder
                         properties={[
                             pokemonOptions,
-                            setPokemonOptions,
-                            opponentPokemon,
-                            setOpponentPokemon,
                             selectedPokemon,
                             setSelectedPokemon,
                             playerPokemon,
@@ -140,6 +170,22 @@ export function Home() {
                     <Battle
                         playerPokemon={playerPokemon}
                         opponentPokemon={opponentPokemon}
+                        setBattleFactoryState={setBattleFactoryState}
+                    />
+                </div>
+            )}
+            {battleFactoryState === "swap" && (
+                <div>
+                    <PokemonSwap
+                        properties={[
+                            opponentPokemon,
+                            selectedPokemon,
+                            setSelectedPokemon,
+                            playerPokemon,
+                            setPlayerPokemon,
+                            setBattleFactoryState,
+                            winStreak,
+                        ]}
                     />
                 </div>
             )}

@@ -38,10 +38,11 @@ export function Battle(props) {
                 setGameOver(true);
             }
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isForceSwitch]);
 
     useEffect(() => {
-        if (!isGameOver) return;
+        if (!isGameOver || isVictory !== null) return;
         let [message, win] =
             props.playerPokemon[0].hp[0] === 0
                 ? ["You Lose!", false]
@@ -49,6 +50,7 @@ export function Battle(props) {
         updateTurnText(message);
         updateTurnText("Player2(CPU): GGWP!");
         setVictory(win);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isGameOver]);
 
     function nextTurn(move) {
@@ -108,7 +110,15 @@ export function Battle(props) {
                 <div>
                     {isGameOver && (
                         <div className="game-over">
-                            <GameOverDisplay win={isVictory} />
+                            <GameOverDisplay 
+                                win={isVictory} 
+                                onClick={props.setBattleFactoryState}
+                            />
+                        </div>
+                    )}
+                    {!isGameOver && (
+                        <div>
+                            <h2>Turn {turns.length+1}</h2>    
                         </div>
                     )}
                 </div>

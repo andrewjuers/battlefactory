@@ -9,6 +9,7 @@ export function PokemonOptions(props) {
                 <PokemonOption 
                     pokemon={poke}
                     onClick={props.onClick}
+                    selectedPokemon={props.selectedPokemon}
                 />
             </div>
         );
