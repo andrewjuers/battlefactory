@@ -46,13 +46,12 @@ export function PokemonSwap(props) {
 
     return (
         <div className="pokemon-swap">
-            <h1>Pokemon Swap</h1>
-            <h2>Win Streak: {winStreak}</h2>
             <div className="row">
+            <h2>Pokemon Swap  -  Win Streak: {winStreak}</h2>
                 {selectedPokemon && (
                     <div>
                         <SelectedPokemon pokemon={selectedPokemon} />
-                        <button
+                        <button className="complete-swap-button"
                             onClick={() => {
                                 setComplete(true);
                             }}
@@ -70,7 +69,7 @@ export function PokemonSwap(props) {
                 />
             </div>
             <div className="row">
-                <PokemonOptions
+                <PokemonOptions className="pokemonOptions"
                     pokemon={playerPokemon}
                     onClick={setSelectedPokemon}
                     selectedPokemon={playerSwap}
@@ -87,7 +86,7 @@ export function PokemonSwap(props) {
                 {isComplete && (
                     <div>
                         <button onClick={() => {completeSwap()}}>
-                            Yes, confirm and start next battle!
+                            Yes, complete swap and start battle!
                         </button>
                         <button onClick={() => {setComplete(false)}}>Nooo I changed my mind!</button>
                     </div>

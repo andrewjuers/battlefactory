@@ -3,7 +3,7 @@ import { Battle } from "components";
 import { TeamBuilder } from "components";
 import { PokemonSwap } from "components";
 import { useEffect, useState } from "react";
-import { generateRandomPokemonId } from "shared";
+import { FIRST_BOSS, generateRandomPokemonId, getRandomType } from "shared";
 import { hpCalc } from "shared";
 import { BANNED_MOVES, DEFAULT_MOVES } from "shared";
 import { wait } from "shared";
@@ -19,7 +19,7 @@ export function Home() {
 
     useEffect(() => {
         loadNewPokemon();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -35,41 +35,62 @@ export function Home() {
         setOpponentPokemon(dumb);
         /// Update winstreak
         if (battleFactoryState === "swap") setWinStreak(winStreak + 1);
-        else if (battleFactoryState === "teambuild" && playerPokemon.length > 0) {
+        else if (
+            battleFactoryState === "teambuild" &&
+            playerPokemon.length > 0
+        ) {
             setWinStreak(0);
             setPlayerPokemon([]);
             loadNewPokemon();
         }
         /// New opponent pokemon
-        if (winStreak > 0 && battleFactoryState !== "swap" && battleFactoryState === "battle") loadNewPokemon(false);
+        if (
+            winStreak > 0 &&
+            battleFactoryState !== "swap" &&
+            battleFactoryState === "battle"
+        )
+            loadNewPokemon(false);
         /// Load
         (async () => {
             await wait(2500);
         })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [battleFactoryState]);
 
     function loadNewPokemon(init = true) {
         if (init) {
             for (let i = 0; i < 6; i++) {
-                createRandomPokemon(pokemonOptions, i, setPokemonOptions);
+                createNewPokemon(pokemonOptions, i, setPokemonOptions);
             }
         }
         for (let i = 0; i < 3; i++) {
-            createRandomPokemon(opponentPokemon, i, setOpponentPokemon);
+            createNewPokemon(
+                opponentPokemon,
+                i,
+                setOpponentPokemon,
+                winStreak >= 6
+                    ? FIRST_BOSS[Math.floor(Math.random() * FIRST_BOSS.length)]
+                    : null
+            );
         }
         setTimeout(() => {
             setApiLoading(false);
         }, 5000);
     }
 
-    async function createRandomPokemon(pokemonData, i, setFunc) {
+    function createNewPokemon(pokemonData, i, setFunc, path = null) {
+        generateNewPokemon(
+            pokemonData,
+            i,
+            setFunc,
+            path === null ? generateRandomPokemonId() : path
+        );
+    }
+
+    async function generateNewPokemon(pokemonData, i, setFunc, path) {
         await setTimeout(() => {
             axios
-                .get(
-                    "https://pokeapi.co/api/v2/pokemon/" +
-                        generateRandomPokemonId()
-                )
+                .get("https://pokeapi.co/api/v2/pokemon/" + path)
                 .then((response) => {
                     pokemonData[i] = response.data;
                     pokemonData[i].moveset = [{ name: "Tackle" }];
@@ -97,14 +118,21 @@ export function Home() {
                     response.data.power &&
                     (response.data.power > 50 || response.data.priority > 0) &&
                     BANNED_MOVES.includes(response.data.name) === false
-                )
+                ) {
                     moves.push(response.data);
+                }
             });
         }
         if (moves.length < 4) {
             let choices = [...DEFAULT_MOVES];
             shuffle(choices);
             moves = [...moves, ...choices.slice(0, 4 - moves.length)];
+        }
+        for (const move of moves) {
+            if (move.name === "hidden-power" || move.name === "secret-power") {
+                move.type.name = getRandomType();
+                move.power = 90;
+            }
         }
         shuffle(moves);
         let temp = moves.slice(0, 4);
@@ -171,6 +199,7 @@ export function Home() {
                         playerPokemon={playerPokemon}
                         opponentPokemon={opponentPokemon}
                         setBattleFactoryState={setBattleFactoryState}
+                        winStreak={winStreak}
                     />
                 </div>
             )}

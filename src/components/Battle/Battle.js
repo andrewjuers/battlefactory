@@ -16,7 +16,7 @@ export function Battle(props) {
     useEffect(() => {
         if (isForceSwitch === false) return;
         if (props.opponentPokemon[0].hp[0] === 0) {
-            let switch_index = switchPokemon(props.opponentPokemon);
+            let switch_index = switchPokemon(props.playerPokemon, props.opponentPokemon);
             if (switch_index === -1) {
                 setGameOver(true);
                 return;
@@ -24,7 +24,7 @@ export function Battle(props) {
             updateTurnText(
                 doSwitch(
                     props.opponentPokemon,
-                    switchPokemon(props.opponentPokemon)
+                    switchPokemon(props.playerPokemon, props.opponentPokemon)
                 )
             );
             setForceSwitch(false);
@@ -113,6 +113,7 @@ export function Battle(props) {
                             <GameOverDisplay 
                                 win={isVictory} 
                                 onClick={props.setBattleFactoryState}
+                                winStreak={isVictory ? props.winStreak + 1 : props.winStreak}
                             />
                         </div>
                     )}

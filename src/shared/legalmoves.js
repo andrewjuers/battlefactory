@@ -26,6 +26,9 @@ export const BANNED_MOVES = [
     "future-sight", /// For now
     "explosion",
     "self-destruct",
+    "covet", /// Bad move, maybe buff/make useful
+    "swift",
+    "bubble-beam", /// snorlax??
 ];
 
 export const DEFAULT_MOVES = [

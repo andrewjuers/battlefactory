@@ -1,8 +1,4 @@
-import axios from "axios";
-
-// export function getRandomPokemon() {
-//     return getPokemonData(generateRandomPokemonId());
-// }
+import { PogeyData } from "./pogey";
 
 export function generateRandomPokemonId() {
     return Math.floor(Math.random() * 152);
@@ -50,29 +46,12 @@ export function getPokemonBstTo600(stats) {
     return temp;
 }
 
-export async function createPokemon(setPokemon, index) {
-    let pokemonData = null;
-    await axios
-        .get("https://pokeapi.co/api/v2/pokemon/" + generateRandomPokemonId())
-        .then((response) => {
-            pokemonData = response.data;
-            pokemonData.moveset = [{"name": "Tackle"}];
-            setPokemon(pokemonData, index);
-        });
+// returns random key from Set or Map
+function getRandomKey(collection) {
+    let keys = Array.from(collection.keys());
+    return keys[Math.floor(Math.random() * keys.length)];
 }
 
-export async function createMoves(pokemonData) {
-    let moves = [];
-    for (let i = 0; i < pokemonData.moves.length; i++) {
-        let move = pokemonData.moves[i].move;
-        await axios.get(move.url).then((response) => {
-            if (
-                response.data.damage_class.name !== "status" &&
-                response.data.power
-            ) {
-                moves.push(response.data);
-            }
-        });
-    }
-    console.log(moves);
+export function getRandomType() {
+   return getRandomKey(PogeyData.types).toLowerCase();
 }

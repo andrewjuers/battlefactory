@@ -16,7 +16,7 @@ export function doTurn(playerPokemon, opponentPokemon, move) {
             text,
             playerTurn(playerPokemon, opponentPokemon, move)
         );
-        if (opponentPokemon[0].hp[0] === 0) return text;
+        if (opponentPokemon[0].hp[0] <= 0) return text;
         text = addArrayToArray(
             text,
             playerTurn(opponentPokemon, playerPokemon, cpuMove)
@@ -26,7 +26,7 @@ export function doTurn(playerPokemon, opponentPokemon, move) {
             text,
             playerTurn(opponentPokemon, playerPokemon, cpuMove)
         );
-        if (playerPokemon[0].hp[0] === 0) return text;
+        if (playerPokemon[0].hp[0] <= 0) return text;
         text = addArrayToArray(
             text,
             playerTurn(playerPokemon, opponentPokemon, move)
@@ -82,7 +82,7 @@ export function addArrayToArray(arr1, arr2) {
 export function doAttack(attacker, defender, move) {
     let text = [];
     let damage = damageCalc(attacker, defender, move);
-    let damage_number = null;
+    let damage_number = 0; /// changed to 0 from null
     [defender.hp[0], damage_number] =
         defender.hp[0] - damage > 0
             ? [defender.hp[0] - damage, damage]

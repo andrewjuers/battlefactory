@@ -9,3 +9,4 @@ export * from './helpers';
 export * from './legalmoves';
 export * from './pogey';
 export * from './randompokemon';
+export * from './computerpokemon';
