@@ -2,7 +2,6 @@ import { useState } from "react";
 import "./Move.css";
 
 export function Move(props) {
-
     const [style, setStyle] = useState({ display: "none" });
 
     if (props.move.type === undefined) {
@@ -22,7 +21,6 @@ export function Move(props) {
                     onMouseOut={(e) => {
                         setStyle({ display: "none" });
                     }}
-                   
                 >
                     <p>{props.move.name}</p>
                     <p>{props.move.type.name}</p>
@@ -35,7 +33,12 @@ export function Move(props) {
                     <p>Priority: {props.move.priority}</p>
                     <p>Accuracy: {props.move.accuracy}</p>
                     <p>PP: {props.move.pp}</p>
-                    <p>Effect: {props.move.effect_entries[0].effect}</p>
+                    <p>
+                        Effect:{" "}
+                        {props.move.effect_entries[0] !== undefined
+                            ? props.move.effect_entries[0].effect
+                            : "ERROR!"}
+                    </p>
                     <p>
                         Description:{" "}
                         {props.move.flavor_text_entries[1].flavor_text}

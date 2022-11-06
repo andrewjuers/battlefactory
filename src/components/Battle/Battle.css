@@ -1,5 +1,5 @@
 .battle {
-    display: table;
+    display: flex;
 }
 
 .pokemon-grid {

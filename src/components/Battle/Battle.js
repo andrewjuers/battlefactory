@@ -16,7 +16,10 @@ export function Battle(props) {
     useEffect(() => {
         if (isForceSwitch === false) return;
         if (props.opponentPokemon[0].hp[0] === 0) {
-            let switch_index = switchPokemon(props.playerPokemon, props.opponentPokemon);
+            let switch_index = switchPokemon(
+                props.playerPokemon,
+                props.opponentPokemon
+            );
             if (switch_index === -1) {
                 setGameOver(true);
                 return;
@@ -38,7 +41,7 @@ export function Battle(props) {
                 setGameOver(true);
             }
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isForceSwitch]);
 
     useEffect(() => {
@@ -50,7 +53,7 @@ export function Battle(props) {
         updateTurnText(message);
         updateTurnText("Player2(CPU): GGWP!");
         setVictory(win);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isGameOver]);
 
     function nextTurn(move) {
@@ -110,16 +113,20 @@ export function Battle(props) {
                 <div>
                     {isGameOver && (
                         <div className="game-over">
-                            <GameOverDisplay 
-                                win={isVictory} 
+                            <GameOverDisplay
+                                win={isVictory}
                                 onClick={props.setBattleFactoryState}
-                                winStreak={isVictory ? props.winStreak + 1 : props.winStreak}
+                                winStreak={
+                                    isVictory
+                                        ? props.winStreak + 1
+                                        : props.winStreak
+                                }
                             />
                         </div>
                     )}
                     {!isGameOver && (
                         <div>
-                            <h2>Turn {turns.length+1}</h2>    
+                            <h2>Turn {turns.length + 1}</h2>
                         </div>
                     )}
                 </div>

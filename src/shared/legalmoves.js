@@ -29,6 +29,34 @@ export const BANNED_MOVES = [
     "covet", /// Bad move, maybe buff/make useful
     "swift",
     "bubble-beam", /// snorlax??
+    "eruption",
+    "water-spout",
+];
+
+export const GOOD_MOVES = [
+    "quick-attack",
+    "extreme-speed",
+    "aqua-jet",
+    "bullet-punch",
+    "first-impression",
+    "ice-shard",
+    "mach-punch",
+    "shadow-sneak", /// not in gen1
+    "sucker-punch", /// power nerf to 70, gonna buff back to 80
+    "overheat",
+    "thunder",
+    "blizzard",
+    "leaf-storm",
+    "earthquake",
+    "stone-edge",
+    "close-combat",
+    "superpower",
+    "flare-blitz",
+    "brave-bird",
+    "hydro-pump",
+    "dark-pulse",
+    "crunch",
+    "throat-chop", /// buff this move to at least 90-95 for the lols
 ];
 
 export const DEFAULT_MOVES = [
@@ -139,7 +167,10 @@ export const DEFAULT_MOVES = [
         effect_entries: [{ effect: "KICK!" }],
         flavor_text_entries: [
             { flavor_text: "Why" },
-            { flavor_text: "No additional effect. May get a foot to the face." },
+            {
+                flavor_text:
+                    "No additional effect. May get a foot to the face.",
+            },
         ],
         type: { name: "normal" },
         accuracy: 100,
@@ -153,7 +184,10 @@ export const DEFAULT_MOVES = [
         effect_entries: [{ effect: "Not fair!" }],
         flavor_text_entries: [
             { flavor_text: "Why" },
-            { flavor_text: "No additional effect. Will use the target's attack in calculation one day." },
+            {
+                flavor_text:
+                    "No additional effect. Will use the target's attack in calculation one day.",
+            },
         ],
         type: { name: "dark" },
         accuracy: 100,
@@ -167,7 +201,10 @@ export const DEFAULT_MOVES = [
         effect_entries: [{ effect: "Superman!" }],
         flavor_text_entries: [
             { flavor_text: "Why" },
-            { flavor_text: "No additional effect. Will lower attack and defense one day." },
+            {
+                flavor_text:
+                    "No additional effect. Will lower attack and defense one day.",
+            },
         ],
         type: { name: "fighting" },
         accuracy: 100,

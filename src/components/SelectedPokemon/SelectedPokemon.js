@@ -1,4 +1,5 @@
-import { Move } from "components/Move";
+import { Move } from "components";
+import { pokemonNameToString, pokemonTypeToString } from "shared";
 import "./SelectedPokemon.css";
 
 export function SelectedPokemon(props) {
@@ -31,7 +32,10 @@ export function SelectedPokemon(props) {
                     src={props.pokemon.sprites.front_default}
                     alt={props.pokemon.name}
                 ></img>
-                <p>{props.pokemon.name} &nbsp;</p>
+                <div>
+                    <p>{pokemonNameToString(props.pokemon)}</p>
+                    <p>{pokemonTypeToString(props.pokemon)}</p>
+                </div>
             </div>
             <div className="selected-pokemon-row">
                 <p>STATS: </p>

@@ -9,37 +9,73 @@
 }
 
 .move-button {
-    width: 125px;
+    width: 100px;
     height: 75px;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 12px;
     outline: black solid 1px;
     border-radius: 4px;
-    color: #222;
-    text-shadow: #222 1px 1px 1px;
-}
-
-.move-button p {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    vertical-align: center;
 }
 
-#fire { background-color: darkorange; }
-#water { background-color: steelblue; }
-#grass { background-color: green; }
-#electric { background-color: gold; }
-#bug { background-color: olivedrab; }
-#fighting { background-color: brown; }
-#psychic { background-color: deeppink; }
-#dark { background-color: #433; }
-#fairy { background-color: salmon; }
-#poison { background-color: purple; }
-#ground { background-color: #752; }
-#rock { background-color: darkgoldenrod; }
-#flying { background-color: mediumpurple; }
-#ice { background-color: paleturquoise; }
-#dragon { background-color: slateblue; }
-#steel { background-color: slategray; }
-#normal { background-color: oldlace; }
-#ghost { background-color: #436; }
-#hidden { background-color: teal;}
+#fire {
+    background-color: darkorange;
+}
+#water {
+    background-color: steelblue;
+}
+#grass {
+    background-color: green;
+}
+#electric {
+    background-color: gold;
+}
+#bug {
+    background-color: olivedrab;
+}
+#fighting {
+    background-color: brown;
+}
+#psychic {
+    background-color: deeppink;
+}
+#dark {
+    background-color: #433;
+}
+#fairy {
+    background-color: salmon;
+}
+#poison {
+    background-color: purple;
+}
+#ground {
+    background-color: #752;
+}
+#rock {
+    background-color: darkgoldenrod;
+}
+#flying {
+    background-color: mediumpurple;
+}
+#ice {
+    background-color: paleturquoise;
+}
+#dragon {
+    background-color: slateblue;
+}
+#steel {
+    background-color: slategray;
+}
+#normal {
+    background-color: oldlace;
+}
+#ghost {
+    background-color: #436;
+}
+#hidden {
+    background-color: teal;
+}
