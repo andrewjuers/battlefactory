@@ -131,7 +131,7 @@ export function Home() {
         for (const move of moves) {
             if (move.name === "hidden-power" || move.name === "secret-power") {
                 move.type.name = getRandomType();
-                move.power = 90;
+                move.power = 80;
             }
         }
         shuffle(moves);

@@ -1,9 +1,10 @@
-.pokemon {
-    
+.selected-pokemon-div {
+    display: flex;
 }
 
 .selected-pokemon-row {
     display: flex;
+    min-width: 205px;
 }
 
 .selected-pokemon-row::after {
@@ -13,4 +14,9 @@
 
 .pokemon-img {
     object-fit: contain;
+    height: 96px;
+}
+
+.move-row {
+    height: auto;
 }

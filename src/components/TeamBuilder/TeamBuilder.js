@@ -70,6 +70,8 @@ export function TeamBuilder(props) {
                         I like this team!
                     </button>
                 )}
+            </div>
+            <div className="row">
                 {playerPokemon.length < 3 && (
                     <button
                         onClick={() => {
