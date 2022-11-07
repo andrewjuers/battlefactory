@@ -54,6 +54,9 @@ export const GOOD_MOVES = [
     "flare-blitz",
     "brave-bird",
     "hydro-pump",
+    "draco-meteor",
+    "outrage",
+    "megahorn",
     "dark-pulse",
     "crunch",
     "throat-chop", /// buff this move to at least 90-95 for the lols

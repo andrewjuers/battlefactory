@@ -116,7 +116,7 @@ export function Home() {
                 if (
                     response.data.damage_class.name !== "status" &&
                     response.data.power &&
-                    (response.data.power > 50 || response.data.priority > 0) &&
+                    (response.data.power > 69 || response.data.priority > 0) &&
                     BANNED_MOVES.includes(response.data.name) === false
                 ) {
                     moves.push(response.data);
