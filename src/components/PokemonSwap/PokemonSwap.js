@@ -46,7 +46,7 @@ export function PokemonSwap(props) {
 
     return (
         <div className="pokemon-swap">
-            <div className="row">
+            <div className="pokemon-swap-row">
             <h2>Pokemon Swap  -  Win Streak: {winStreak}</h2>
                 {selectedPokemon && (
                     <div>
@@ -61,14 +61,14 @@ export function PokemonSwap(props) {
                     </div>
                 )}
             </div>
-            <div className="row">
+            <div className="pokemon-swap-row">
                 <PokemonOptions
                     pokemon={pokemonOptions}
                     onClick={setSelectedPokemon}
                     selectedPokemon={optionSwap}
                 />
             </div>
-            <div className="row">
+            <div className="pokemon-swap-row">
                 <PokemonOptions className="pokemonOptions"
                     pokemon={playerPokemon}
                     onClick={setSelectedPokemon}

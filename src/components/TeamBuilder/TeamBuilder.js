@@ -26,7 +26,7 @@ export function TeamBuilder(props) {
 
     return (
         <div className="battle-factory">
-            <div className="row">
+            <div className="teambuilder-row">
                 {selectedPokemon && (
                     <div>
                         <SelectedPokemon pokemon={selectedPokemon} />
@@ -50,13 +50,15 @@ export function TeamBuilder(props) {
                     </div>
                 )}
             </div>
-            <div className="row">
+            <div className="teambuilder-row">
+                Pick 3: 
                 <PokemonOptions
                     pokemon={pokemonOptions}
                     onClick={setSelectedPokemon}
                 />
             </div>
-            <div className="row">
+            <div className="teambuilder-row">
+                Your Team: 
                 <PokemonOptions
                     pokemon={playerPokemon}
                     onClick={setSelectedPokemon}
@@ -71,7 +73,7 @@ export function TeamBuilder(props) {
                     </button>
                 )}
             </div>
-            <div className="row">
+            <div className="teambuilder-row">
                 {playerPokemon.length < 3 && (
                     <button
                         onClick={() => {

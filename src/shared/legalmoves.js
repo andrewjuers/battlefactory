@@ -31,6 +31,10 @@ export const BANNED_MOVES = [
     "bubble-beam", /// snorlax??
     "eruption",
     "water-spout",
+    "blast-burn",
+    "frenzy-plant",
+    "hydro-cannon",
+    
 ];
 
 export const GOOD_MOVES = [

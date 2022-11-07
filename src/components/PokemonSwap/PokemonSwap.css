@@ -3,8 +3,10 @@
     margin: 0 auto;
 }
 
-.row {
-    height: 277px;
+.pokemon-swap-row {
+    height: 11em;
+    justify-content: center;
+    align-items: center;
 }
 
 .row::after {

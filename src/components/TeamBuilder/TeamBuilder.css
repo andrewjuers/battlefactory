@@ -1,14 +1,14 @@
 .battle-factory {
     display: table;
     margin: 0 auto;
-    margin-top: 5em;
+    margin-top: 1em;
 }
 
-.row {
-    height: 275px;
+.teambuilder-row {
+    height: 9em;
 }
 
-.row::after {
+.teambuilder-row::after {
     content: "";
     clear: both;
     display: table;
