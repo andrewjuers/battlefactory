@@ -1,8 +1,16 @@
 import { PogeyData } from "./pogey";
 import { getPokemonById } from "./processjson";
+import pokedex from "shared/firstgenpokedex";
+import { shuffle } from "shared";
 
-export function generateRandomPokemon() {
-    return getPokemonById(generateRandomPokemonId());
+export function generateRandomPokemon(pokemonTeam) {
+    let choices = [...pokedex];
+    choices = shuffle(choices);
+    // make sure unique pokemon
+    for (const poke of choices) {
+        if (pokemonTeam.filter(mon => mon.name === poke.name).length > 0) continue;
+        return getPokemonById(poke.id-1);
+    }
 }
 
 export function generateRandomPokemonId() {
@@ -61,4 +69,13 @@ function getRandomKey(collection) {
 
 export function getRandomType() {
     return getRandomKey(PogeyData.types).toLowerCase();
+}
+
+export function getGoodRandomMoveset(moves) {
+    let choices = [...moves];
+    let moveset = [];
+    for (const move of choices) {
+        // for (const )
+    }
+    
 }

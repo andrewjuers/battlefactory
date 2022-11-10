@@ -67,7 +67,7 @@ export function Home() {
     }
 
     function randomNewPokemon(pokemonData, i, setFunc) {
-        pokemonData[i] = generateRandomPokemon();
+        pokemonData[i] = generateRandomPokemon(pokemonData);
         pokemonData[i].base_stats = baseStatTotalTo600(pokemonData[i]);
         pokemonData[i].moveset = [{ name: "Tackle" }];
         pokemonData[i].hp = [
