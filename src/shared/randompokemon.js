@@ -1,7 +1,12 @@
 import { PogeyData } from "./pogey";
+import { getPokemonById } from "./processjson";
+
+export function generateRandomPokemon() {
+    return getPokemonById(generateRandomPokemonId());
+}
 
 export function generateRandomPokemonId() {
-    return Math.floor(Math.random() * 152);
+    return Math.floor(Math.random() * 151);
 }
 
 export function getPokemonName(data) {
@@ -13,7 +18,7 @@ export function getPokemonStats(data) {
     for (let i = 0; i < 6; i++) {
         temp[i] = parseInt(data["stats"][i]["base_stat"]);
     }
-    temp = getPokemonBstTo600(temp);
+    temp = baseStatTotalTo600(temp);
     return temp;
 }
 
@@ -34,14 +39,16 @@ export function getPokemonImg(pokemonId) {
     );
 }
 
-export function getPokemonBstTo600(stats) {
+export function baseStatTotalTo600(pokemon) {
     let temp = Array(6).fill(null);
     let bst = 0;
     for (let i = 0; i < 6; i++) {
-        bst += parseInt(stats[i]);
+        bst += parseInt(pokemon.stats[i].base_stat);
     }
     for (let i = 0; i < 6; i++) {
-        temp[i] = Math.floor((parseInt(stats[i]) * 600) / bst);
+        temp[i] = Math.floor(
+            (parseInt(pokemon.stats[i].base_stat) * 600) / bst
+        );
     }
     return temp;
 }
@@ -53,5 +60,5 @@ function getRandomKey(collection) {
 }
 
 export function getRandomType() {
-   return getRandomKey(PogeyData.types).toLowerCase();
+    return getRandomKey(PogeyData.types).toLowerCase();
 }
