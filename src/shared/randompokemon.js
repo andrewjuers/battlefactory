@@ -8,8 +8,9 @@ export function generateRandomPokemon(pokemonTeam) {
     choices = shuffle(choices);
     // make sure unique pokemon
     for (const poke of choices) {
-        if (pokemonTeam.filter(mon => mon.name === poke.name).length > 0) continue;
-        return getPokemonById(poke.id-1);
+        if (pokemonTeam.filter((mon) => mon.name === poke.name).length > 0)
+            continue;
+        return getPokemonById(poke.id - 1);
     }
 }
 
@@ -75,7 +76,19 @@ export function getGoodRandomMoveset(moves) {
     let choices = [...moves];
     let moveset = [];
     for (const move of choices) {
-        // for (const )
+        let added = false;
+        for (const set of moveset) {
+            if (
+                set.type.name === move.type.name &&
+                set.damage_class.name === move.damage_class.name &&
+                set.priority === move.priority
+            ) {
+                moveset[moveset.indexOf(set)] = set.power > move.power ? set : move;
+                added = true;
+            }
+        }
+        if (!added) moveset.push(move);
+        if (moveset.length === 4) return moveset;
     }
-    
+    return moveset;
 }

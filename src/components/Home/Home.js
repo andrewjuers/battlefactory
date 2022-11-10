@@ -2,7 +2,7 @@ import { Battle } from "components";
 import { TeamBuilder } from "components";
 import { PokemonSwap } from "components";
 import React, { useEffect, useState } from "react";
-import { baseStatTotalTo600, generateRandomPokemon, getMoveByName, getRandomType, shuffle } from "shared";
+import { baseStatTotalTo600, generateRandomPokemon, getGoodRandomMoveset, getMoveByName, getRandomType, shuffle } from "shared";
 import { hpCalc } from "shared";
 import { BANNED_MOVES, DEFAULT_MOVES } from "shared";
 
@@ -24,6 +24,7 @@ export function Home() {
     }, []);
 
     useEffect(() => {
+        forceUpdate();
         if (isApiLoading) return;
         /// glitchy
         setSelectedPokemon(null);
@@ -55,6 +56,7 @@ export function Home() {
     }, [battleFactoryState]);
 
     function loadNewPokemon(init = true) {
+        setSelectedPokemon(null);
         if (init) {
             for (let i = 0; i < 6; i++) {
                 randomNewPokemon(pokemonOptions, i, setPokemonOptions);
@@ -103,8 +105,7 @@ export function Home() {
             }
         }
         shuffle(moves);
-        let temp = moves.slice(0, 4);
-        pokemonArr[index].moveset = temp;
+        pokemonArr[index].moveset = getGoodRandomMoveset(moves);
         setFunc(pokemonArr);
     }
 
@@ -119,7 +120,7 @@ export function Home() {
                     height: "100vh",
                 }}
             >
-                Loading the data... {console.log("loading state")}
+                Loading the data... 
             </div>
         );
     }

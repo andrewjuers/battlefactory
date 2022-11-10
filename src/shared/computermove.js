@@ -40,11 +40,18 @@ export function strongestMove(playerTeam, opponentTeam) {
 }
 
 export function switchPokemon(playerTeam, opponentTeam) {
-    if (opponentTeam[1].hp[0] > 0) {
-        return 1;
-    } else if (opponentTeam[2].hp[0] > 0) {
-        return 2;
-    } else return -1;
+    let options = opponentTeam.filter(poke => poke != opponentTeam[0] && poke.hp[0] > 0);
+    for (const option of options) {
+        if (option.base_stats[5] > playerTeam[0].base_stats[5] && damageCalc(option, playerTeam[0], strongestMove(playerTeam, [option]))) {
+            return opponentTeam.indexOf(option);
+        }
+    }
+    let damages = options.map((poke) => {
+        return damageCalc(poke, playerTeam[0], strongestMove(playerTeam, [poke]));
+    });
+    if (options.length > 1 && damages[0] < damages[1]) return opponentTeam.indexOf(options[1]);
+    else if (options.length >= 1) return opponentTeam.indexOf(options[0]); 
+    else return -1;
 }
 
 export function bestSwitch(playerTeam, opponentTeam) {
