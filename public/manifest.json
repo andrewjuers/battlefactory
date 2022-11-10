@@ -1,9 +1,3 @@
-{
-  "short_name": "Battle Factory",
-  "name": "Battle Factory",
-  "icons": [],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:5ec5f9465b2b77f92f7dbbd4ab8cef4c01cddc1a88f629ae87039c07f80af2a8
+size 188
