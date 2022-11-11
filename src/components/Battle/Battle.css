@@ -1,5 +1,6 @@
 .battle {
     display: flex;
+    padding: 1em;
 }
 
 .pokemon-grid {

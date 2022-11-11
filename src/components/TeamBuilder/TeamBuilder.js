@@ -25,7 +25,7 @@ export function TeamBuilder(props) {
     }
 
     return (
-        <div className="battle-factory">
+        <div className="teambuilder-div">
             <div className="teambuilder-row">
                 {selectedPokemon && (
                     <div>

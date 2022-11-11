@@ -5,6 +5,7 @@
 
 .pokemon-swap-row {
     height: 11em;
+    width: 75em;
     justify-content: center;
     align-items: center;
 }

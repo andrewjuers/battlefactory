@@ -2,7 +2,7 @@ import { Battle } from "components";
 import { TeamBuilder } from "components";
 import { PokemonSwap } from "components";
 import React, { useEffect, useState } from "react";
-import { baseStatTotalTo600, generateRandomPokemon, getGoodRandomMoveset, getMoveByName, getRandomType, shuffle } from "shared";
+import { baseStatTotalTo600, generateRandomPokemon, getGoodRandomMoveset, getMoveByName, getRandomInt, getRandomType, shuffle } from "shared";
 import { hpCalc } from "shared";
 import { BANNED_MOVES, DEFAULT_MOVES } from "shared";
 
@@ -69,7 +69,7 @@ export function Home() {
     }
 
     function randomNewPokemon(pokemonData, i, setFunc) {
-        pokemonData[i] = generateRandomPokemon(pokemonData);
+        pokemonData[i] = structuredClone(generateRandomPokemon(pokemonData));
         pokemonData[i].base_stats = baseStatTotalTo600(pokemonData[i]);
         pokemonData[i].moveset = [{ name: "Tackle" }];
         pokemonData[i].hp = [
@@ -82,26 +82,40 @@ export function Home() {
 
     function createRandomMoveset(pokemonArr, index, setFunc) {
         let moves = [];
+        let pokemon = pokemonArr[index];
+        let diff = Math.abs(pokemon.base_stats[1] - pokemon.base_stats[3]);
+        let attack = (diff > 30 || !(pokemon.base_stats[1] > 75 && pokemon.base_stats[3] > 75) ? "attack" : null); 
+        if (attack !== null) attack = (pokemon.base_stats[1] > pokemon.base_stats[3] ? "physical" : "special")
+        /// New move arr
+        let newMoves = [];
         for (const move of pokemonArr[index].moves) {
             let m = getMoveByName(move.move.name);
+            newMoves.push(m);
             if (
                 m.damage_class.name !== "status" &&
                 m.power &&
-                (m.power > 69 || m.priority > 0) &&
-                BANNED_MOVES.includes(m.name) === false
+                (m.power > 54 || m.priority > 0) &&
+                BANNED_MOVES.includes(m.name) === false 
             ) {
-                moves.push(m);
+               if (attack === null || m.damage_class.name === attack) moves.push(m);
             }
         }
+        /// update pokemon moves;
+        pokemonArr[index].moves_data = newMoves;
         if (moves.length < 4) {
             let choices = [...DEFAULT_MOVES];
             shuffle(choices);
-            moves = [...moves, ...choices.slice(0, 4 - moves.length)];
+            moves = [...moves, ...choices];
         }
         for (const move of moves) {
             if (move.name === "hidden-power" || move.name === "secret-power") {
-                move.type.name = getRandomType();
+                move.type.name = (" " + getRandomType()).slice(1);
                 move.power = 80;
+            }
+            else if (move.priority < 1) {
+                if (move.power < 75) move.power = 75;
+                if (move.power > 95) move.power = 95;
+                else if (move.name === "tri-attack") move.type.name = ["fire", "electric", "ice"][getRandomInt(3)];
             }
         }
         shuffle(moves);

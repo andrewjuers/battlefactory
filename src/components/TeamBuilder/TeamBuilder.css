@@ -1,4 +1,4 @@
-.battle-factory {
+.teambuilder-div {
     display: table;
     margin: 0 auto;
     margin-top: 1em;
@@ -6,6 +6,7 @@
 
 .teambuilder-row {
     height: 9em;
+    width: 75em;
 }
 
 .teambuilder-row::after {

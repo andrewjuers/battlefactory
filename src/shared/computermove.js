@@ -40,53 +40,27 @@ export function strongestMove(playerTeam, opponentTeam) {
 }
 
 export function switchPokemon(playerTeam, opponentTeam) {
-    let options = opponentTeam.filter(poke => poke != opponentTeam[0] && poke.hp[0] > 0);
+    let options = opponentTeam.filter(
+        (poke) => poke != opponentTeam[0] && poke.hp[0] > 0
+    );
     for (const option of options) {
-        if (option.base_stats[5] > playerTeam[0].base_stats[5] && damageCalc(option, playerTeam[0], strongestMove(playerTeam, [option]))) {
+        if (
+            option.base_stats[5] > playerTeam[0].base_stats[5] &&
+            doesMoveKill(option, playerTeam[0], strongestMove(playerTeam, [option]))
+        ) {
             return opponentTeam.indexOf(option);
         }
     }
     let damages = options.map((poke) => {
-        return damageCalc(poke, playerTeam[0], strongestMove(playerTeam, [poke]));
+        return [damageCalc(
+            poke,
+            playerTeam[0],
+            strongestMove(playerTeam, [poke]), poke.hp[0] - damageCalc(playerTeam[0], poke, strongestMove([poke], playerTeam)) > 0 )]
     });
-    if (options.length > 1 && damages[0] < damages[1]) return opponentTeam.indexOf(options[1]);
-    else if (options.length >= 1) return opponentTeam.indexOf(options[0]); 
+    if (options.length > 1 && damages[0][0] < damages[1][0] && damages[1][1])
+        return opponentTeam.indexOf(options[1]);
+    else if (options.length >= 1) return opponentTeam.indexOf(options[0]);
     else return -1;
-}
-
-export function bestSwitch(playerTeam, opponentTeam) {
-    let damages = [];
-
-    for (const poke of opponentTeam) {
-        let move = makeMove(playerTeam, [poke]);
-        let damage = damageCalc(poke, playerTeam[0], move);
-        damages.push([move, damage]);
-
-        if (poke.base_stats[5] >= playerTeam[0].base_stats[5]) {
-            if (whoWins(playerTeam, [poke])) return opponentTeam.indexOf(poke);
-        }
-    }
-
-    return opponentTeam.indexOf(damages.sort((a, b) => a[1] - b[1])[0]);
-}
-
-export function whoWins(playerTeam, opponentTeam) {
-    let [p1, p2] = [playerTeam[0], opponentTeam[0]];
-    while (p1.hp[0] > 0 && p2.hp[0] > 0) {
-        let m1 = makeMove(opponentTeam, playerTeam);
-        let m2 = makeMove(playerTeam, opponentTeam);
-        if (
-            m1.priority > m2.priority ||
-            (m1.priority === m2.priority && p1.base_stats[5] > p2.base_stats[5])
-        ) {
-            if (doesMoveKill(p1, p2, m1)) return false;
-            p2.hp[0] = p2.hp[0] - damageCalc(p1, p2, m1);
-        } else {
-            if (doesMoveKill(p2, p1, m2)) return true;
-            p1.hp[0] = p1.hp[0] - damageCalc(p2, p1, m2);
-        }
-    }
-    return p2.hp[0] > 0 || p1.hp[0] <= 0;
 }
 
 export function doesMoveKill(attacker, defender, move) {

@@ -31,7 +31,7 @@ export function Move(props) {
                     <p>Power: {props.move.power}</p>
                     <p>Damage Class: {props.move.damage_class.name}</p>
                     <p>Priority: {props.move.priority}</p>
-                    <p>Accuracy: {props.move.accuracy}</p>
+                    {/* <p>Accuracy: {props.move.accuracy}</p> */}
                     <p>PP: {props.move.pp}</p>
                     <p>
                         Effect:{" "}

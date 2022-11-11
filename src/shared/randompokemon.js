@@ -2,6 +2,7 @@ import { PogeyData } from "./pogey";
 import { getPokemonById } from "./processjson";
 import pokedex from "shared/firstgenpokedex";
 import { shuffle } from "shared";
+import { DEFAULT_MOVES } from "./legalmoves";
 
 export function generateRandomPokemon(pokemonTeam) {
     let choices = [...pokedex];
@@ -75,6 +76,7 @@ export function getRandomType() {
 export function getGoodRandomMoveset(moves) {
     let choices = [...moves];
     let moveset = [];
+
     for (const move of choices) {
         let added = false;
         for (const set of moveset) {
@@ -83,12 +85,30 @@ export function getGoodRandomMoveset(moves) {
                 set.damage_class.name === move.damage_class.name &&
                 set.priority === move.priority
             ) {
-                moveset[moveset.indexOf(set)] = set.power > move.power ? set : move;
+                moveset[moveset.indexOf(set)] =
+                    set.power > move.power ? set : move;
                 added = true;
             }
         }
         if (!added) moveset.push(move);
         if (moveset.length === 4) return moveset;
     }
+    if (moveset.length < 4) {
+        let choices = [...DEFAULT_MOVES];
+        shuffle(choices);
+        moveset = [...moveset, ...choices.slice(0, 4 - moveset.length)];
+    }
+    for (const move of moveset) {
+        if (move.name === "hidden-power" || move.name === "secret-power") {
+            move.type.name = (" " + getRandomType()).slice(1);
+            move.power = 80;
+        }
+    }
     return moveset;
 }
+
+export function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+}
+
+// export function getCompetitiveMoves(pokemon, move) {}

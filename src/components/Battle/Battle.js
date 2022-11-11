@@ -15,7 +15,7 @@ export function Battle(props) {
 
     useEffect(() => {
         if (isForceSwitch === false) return;
-        if (props.opponentPokemon[0].hp[0] === 0) {
+        if (props.opponentPokemon[0].hp[0] <= 0) {
             let switch_index = switchPokemon(
                 props.playerPokemon,
                 props.opponentPokemon
@@ -27,7 +27,7 @@ export function Battle(props) {
             updateTurnText(
                 doSwitch(
                     props.opponentPokemon,
-                    switchPokemon(props.playerPokemon, props.opponentPokemon)
+                    switch_index
                 )
             );
             setForceSwitch(false);
