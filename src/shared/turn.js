@@ -1,4 +1,4 @@
-import { makeMove, shouldSwitch } from "./computermove";
+import { makeMove } from "./computermove";
 import { damageCalc, typeEffectiveness } from "./damagecalc";
 
 export function doTurn(playerPokemon, opponentPokemon, move) {

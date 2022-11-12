@@ -41,7 +41,7 @@ export function strongestMove(playerTeam, opponentTeam) {
 
 export function switchPokemon(playerTeam, opponentTeam) {
     let options = opponentTeam.filter(
-        (poke) => poke != opponentTeam[0] && poke.hp[0] > 0
+        (poke) => poke !== opponentTeam[0] && poke.hp[0] > 0
     );
     for (const option of options) {
         if (
