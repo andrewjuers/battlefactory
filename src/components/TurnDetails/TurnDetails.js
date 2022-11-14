@@ -10,7 +10,7 @@ export function TurnDetails(props) {
 
     return (
         <div className="turn-div">
-            <h2 className="turn-heading">Turn {props.turn}</h2>
+            <h2 className="turn-heading"> <button onClick={() => props.setStepNumber(props.turn)}>Turn {props.turn} </button></h2>
             <div className="typed-messages">
                 {typedMessages}
             </div>

@@ -12,6 +12,13 @@ export function Battle(props) {
     const [isForceSwitch, setForceSwitch] = useState(false);
     const [isGameOver, setGameOver] = useState(false);
     const [isVictory, setVictory] = useState(null);
+    const [history, setHistory] = useState([
+        {
+            playerPokemon: structuredClone(props.playerPokemon),
+            opponentPokemon: structuredClone(props.opponentPokemon),
+        },
+    ]);
+    const [stepNumber, setStepNumber] = useState(0);
 
     useEffect(() => {
         if (isForceSwitch === false) return;
@@ -22,15 +29,12 @@ export function Battle(props) {
             );
             if (switch_index === -1) {
                 setGameOver(true);
+                updateHistory();
                 return;
             }
-            updateTurnText(
-                doSwitch(
-                    props.opponentPokemon,
-                    switch_index
-                )
-            );
+            updateTurnText(doSwitch(props.opponentPokemon, switch_index));
             setForceSwitch(false);
+            updateHistory();
         }
         if (props.playerPokemon[0].hp[0] === 0) {
             let playing = false;
@@ -57,6 +61,11 @@ export function Battle(props) {
     }, [isGameOver]);
 
     function nextTurn(move) {
+        if (stepNumber < history.length - 1) {
+            alert("You are living in the past... Let's try that again...");
+            setStepNumber(history.length - 1);
+            return;
+        }
         if (isGameOver) {
             alert("Game is over.");
             return;
@@ -77,6 +86,9 @@ export function Battle(props) {
             props.opponentPokemon[0].hp[0] === 0
         )
             setForceSwitch(true);
+        else {
+            updateHistory();
+        }
     }
 
     function onSwitch(index) {
@@ -87,6 +99,7 @@ export function Battle(props) {
         if (isForceSwitch) {
             updateTurnText(doSwitch(props.playerPokemon, index));
             setForceSwitch(false);
+            updateHistory();
         } else if (!isForceSwitch) {
             let move = { priority: 6, index: index };
             nextTurn(move);
@@ -97,6 +110,15 @@ export function Battle(props) {
         let t = [...turns];
         t[t.length - 1].push(text);
         setTurns(t);
+    }
+
+    function updateHistory() {
+        history.push({
+            playerPokemon: structuredClone(props.playerPokemon),
+            opponentPokemon: structuredClone(props.opponentPokemon),
+        });
+        setStepNumber(history.length - 1);
+        setHistory(history);
     }
 
     let moves = props.playerPokemon[0].moveset.map((move, index) => {
@@ -126,32 +148,92 @@ export function Battle(props) {
                     )}
                     {!isGameOver && (
                         <div>
-                            <h2>Turn {turns.length + 1}</h2>
+                            <h2>Turn {stepNumber + 1}</h2>
                         </div>
                     )}
                 </div>
                 <div className="opponent">
-                    <PokemonParty pokemon={props.opponentPokemon} />
+                    <PokemonParty
+                        pokemon={
+                            stepNumber >= history.length - 1
+                                ? props.opponentPokemon
+                                : history[stepNumber].opponentPokemon
+                        }
+                    />
                     <CurrentPokemon
-                        pokemon={props.opponentPokemon[0]}
-                        img={props.opponentPokemon[0].sprites.front_default}
+                        pokemon={
+                            stepNumber >= history.length - 1
+                                ? props.opponentPokemon[0]
+                                : history[stepNumber].opponentPokemon[0]
+                        }
+                        img={
+                            stepNumber >= history.length - 1
+                                ? props.opponentPokemon[0].sprites.front_default
+                                : history[stepNumber].opponentPokemon[0].sprites
+                                      .front_default
+                        }
                     />
                 </div>
                 <div className="player">
                     <CurrentPokemon
-                        pokemon={props.playerPokemon[0]}
-                        img={props.playerPokemon[0].sprites.back_default}
+                        pokemon={
+                            stepNumber >= history.length - 1
+                                ? props.playerPokemon[0]
+                                : history[stepNumber].playerPokemon[0]
+                        }
+                        img={
+                            stepNumber >= history.length - 1
+                                ? props.playerPokemon[0].sprites.back_default
+                                : history[stepNumber].playerPokemon[0].sprites
+                                      .back_default
+                        }
                     />
                     <div className="pokemon-moves">{moves}</div>
                     <PokemonParty
-                        pokemon={props.playerPokemon}
+                        pokemon={
+                            stepNumber >= history.length - 1
+                                ? props.playerPokemon
+                                : history[stepNumber].playerPokemon
+                        }
                         onClick={onSwitch}
                     />
                 </div>
                 <div></div>
             </div>
             <div className="turn-feed">
-                <TurnFeed turns={turns} />
+                <TurnFeed turns={turns} setStepNumber={setStepNumber} />
+                <div className="turn-control-buttons">
+                    <button
+                        onClick={() => {
+                            setStepNumber(0);
+                        }}
+                    >
+                        |&lt;&lt;
+                    </button>
+                    <button
+                        onClick={() => {
+                            if (stepNumber > 0) setStepNumber(stepNumber - 1);
+                        }}
+                    >
+                        &lt;
+                    </button>
+                    <button
+                        onClick={() => {
+                            if (stepNumber < history.length - 1)
+                                setStepNumber(stepNumber + 1);
+                        }}
+                    >
+                        &gt;
+                    </button>
+                    <button
+                        onClick={() => {
+                            if (stepNumber < history.length - 1)
+                                setStepNumber(history.length - 1);
+                        }}
+                    >
+                        &gt;&gt;|
+                    </button>
+                </div>
             </div>
         </div>
     );

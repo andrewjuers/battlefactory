@@ -43,15 +43,7 @@ export function Home() {
         ) {
             setWinStreak(0);
             setPlayerPokemon([]);
-            loadNewPokemon();
         }
-        /// New opponent pokemon
-        if (
-            winStreak > 0 &&
-            battleFactoryState !== "swap" &&
-            battleFactoryState === "battle"
-        )
-            loadNewPokemon(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [battleFactoryState]);
 
@@ -121,6 +113,13 @@ export function Home() {
         shuffle(moves);
         pokemonArr[index].moveset = getGoodRandomMoveset(moves);
         setFunc(pokemonArr);
+    }
+
+    function nextBattle() {
+        setApiLoading(true);
+        loadNewPokemon(false);
+        setBattleFactoryState("battle");
+        setApiLoading(false);
     }
 
     if (isApiLoading) {
@@ -196,7 +195,7 @@ export function Home() {
                             setSelectedPokemon,
                             playerPokemon,
                             setPlayerPokemon,
-                            setBattleFactoryState,
+                            nextBattle,
                             winStreak,
                         ]}
                     />

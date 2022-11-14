@@ -10,7 +10,7 @@ export function PokemonSwap(props) {
         setSelectedPokemon,
         playerPokemon,
         setPlayerPokemon,
-        setBattleFactoryState,
+        nextBattle,
         winStreak,
     ] = props.properties;
 
@@ -41,7 +41,7 @@ export function PokemonSwap(props) {
         player[player.indexOf(playerSwap)] = optionSwap;
         setPlayerPokemon(player);
         setComplete(false);
-        setBattleFactoryState("battle");
+        nextBattle();
     }
 
     return (
@@ -77,7 +77,7 @@ export function PokemonSwap(props) {
                 {playerPokemon.length === 3 && (
                     <button
                         onClick={() => {
-                            setBattleFactoryState("battle");
+                            nextBattle();
                         }}
                     >
                         I like this team!

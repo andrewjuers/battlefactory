@@ -10,6 +10,7 @@ export function TurnFeed(props) {
                 key={i}
                 turn={i+1}
                 details={t}
+                setStepNumber={props.setStepNumber}
             />
         )
     });
