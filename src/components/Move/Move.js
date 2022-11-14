@@ -32,7 +32,7 @@ export function Move(props) {
                     <p>Damage Class: {props.move.damage_class.name}</p>
                     <p>Priority: {props.move.priority}</p>
                     {/* <p>Accuracy: {props.move.accuracy}</p> */}
-                    <p>PP: {props.move.pp}</p>
+                    {/* <p>PP: {props.move.pp}</p>
                     <p>
                         Effect:{" "}
                         {props.move.effect_entries[0] !== undefined
@@ -42,7 +42,7 @@ export function Move(props) {
                     <p>
                         Description:{" "}
                         {props.move.flavor_text_entries[1].flavor_text}
-                    </p>
+                    </p> */}
                 </div>
             </div>
         </div>

@@ -12,8 +12,8 @@ export function HoverPokemonData(props) {
         <div className="hover-pokemon-div">
             <p>{pokemonNameToString(props.pokemon)}</p>
             <p>Type: {pokemonTypeToString(props.pokemon)}</p>
-            <p>Abilities: {abilities}</p>
-            <p>Weight: {props.pokemon.weight}</p>
+            {/* <p>Abilities: {abilities}</p>
+            <p>Weight: {props.pokemon.weight}</p> */}
             <StatsDisplay pokemon={props.pokemon} />
         </div>
     );
