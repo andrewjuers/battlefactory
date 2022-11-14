@@ -1,6 +1,6 @@
 .battle {
     display: flex;
-    padding: 1em;
+    padding-left: 1em;
 }
 
 .pokemon-grid {
@@ -22,7 +22,5 @@
 }
 
 .turn-feed {
-    height: 600px;
     float: right;
-    border: 2px solid black;
 }

@@ -3,7 +3,8 @@
     display: table;
     width: auto;
     min-width: 350px;
-    max-width: 500px;
-    height: 600px;
+    max-width: 20em;
+    height: 35em;
     background-color: rgb(240, 240, 255);
+    border: 2px solid black;
 }

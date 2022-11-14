@@ -94,7 +94,7 @@ export function Home() {
             if (
                 m.damage_class.name !== "status" &&
                 m.power &&
-                (m.power > 54 || m.priority > 0) &&
+                (m.power > 50 || m.priority > 0) &&
                 BANNED_MOVES.includes(m.name) === false 
             ) {
                if (attack === null || m.damage_class.name === attack) moves.push(m);
