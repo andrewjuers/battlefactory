@@ -2,6 +2,7 @@
     border: 2px solid slategrey;
     overflow-y: auto;
     padding-left: 5px;
+    padding-bottom: 7px;
 }
 
 .turn-heading {
@@ -9,6 +10,11 @@
     margin-bottom: -5px;
 }
 
-.turn-messages {
-    margin-top: -10px;
+.turn-text-line {
+    margin-top: 10px;
+    margin-bottom: 0px;
+}
+
+.turn-button {
+    margin-top: 5px;
 }

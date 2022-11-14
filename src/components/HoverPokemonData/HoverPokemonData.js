@@ -1,3 +1,4 @@
+import { HealthBar } from "components/HealthBar";
 import { StatsDisplay } from "components/StatsDisplay";
 import { pokemonNameToString, pokemonTypeToString } from "shared";
 import "./HoverPokemonData.css";
@@ -10,7 +11,14 @@ export function HoverPokemonData(props) {
 
     return (
         <div className="hover-pokemon-div">
-            <p>{pokemonNameToString(props.pokemon)}</p>
+            <div className="hover-pokemon-div-top">
+                <p>{pokemonNameToString(props.pokemon)}</p>
+                <HealthBar
+                    label=""
+                    value={props.pokemon.hp[0]}
+                    maxValue={props.pokemon.hp[1]}
+                />
+            </div>
             <p>Type: {pokemonTypeToString(props.pokemon)}</p>
             {/* <p>Abilities: {abilities}</p>
             <p>Weight: {props.pokemon.weight}</p> */}

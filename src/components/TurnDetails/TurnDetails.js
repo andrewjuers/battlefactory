@@ -4,13 +4,13 @@ export function TurnDetails(props) {
 
     const typedMessages = props.details.map((d, i) => {
         return (
-            <p key={i}>{d}</p>
+            <p className="turn-text-line" key={i}>{d}</p>
         )
     })
 
     return (
         <div className="turn-div">
-            <h2 className="turn-heading"> <button onClick={() => props.setStepNumber(props.turn)}>Turn {props.turn} </button></h2>
+            <button className="turn-button" onClick={() => props.setStepNumber(props.turn)}><h2 className="turn-heading">Turn {props.turn}</h2></button>
             <div className="typed-messages">
                 {typedMessages}
             </div>
