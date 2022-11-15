@@ -5,7 +5,7 @@ export function BossDisplay(props) {
     let text =
         "You won " +
         props.winStreak +
-        " battles in a row! Now you must battle Blake!";
+        " battles in a row! Now you must battle Trainer Blake!";
     let img = TRAINER_BLAKE.img;
 
     return (
