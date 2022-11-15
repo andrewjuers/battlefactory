@@ -1,6 +1,7 @@
 import { Battle } from "components";
 import { TeamBuilder } from "components";
 import { PokemonSwap } from "components";
+import { BossDisplay } from "components";
 import React, { useEffect, useState } from "react";
 import { baseStatTotalTo600, generateRandomPokemon, getGoodRandomMoveset, getMoveByName, getPokemonByName, getRandomInt, getRandomType, shuffle, TRAINER_BLAKE } from "shared";
 import { hpCalc } from "shared";
@@ -37,7 +38,7 @@ export function Home() {
         setOpponentPokemon(dumb);
         /// (Lose) reset playerPokemon and reset winStreak
         if (
-            battleFactoryState === "teambuild" &&
+            battleFactoryState === "home" &&
             playerPokemon.length > 0
         ) {
             setPlayerPokemon([]);
@@ -56,7 +57,7 @@ export function Home() {
         for (let i = 0; i < 3; i++) {
             if (winStreak !== 6) randomNewPokemon(opponentPokemon, i, setOpponentPokemon);
             else {
-                opponentPokemon[i] = getPokemonByName(TRAINER_BLAKE[i]);
+                opponentPokemon[i] = getPokemonByName(TRAINER_BLAKE.pokemon[i]);
                 getPokemonData(opponentPokemon, i, setOpponentPokemon);
                 createRandomMoveset(opponentPokemon, i, setOpponentPokemon);
                 setOpponentPokemon(opponentPokemon);
@@ -126,6 +127,10 @@ export function Home() {
     }
 
     function nextBattle() {
+        if (winStreak === 6 && battleFactoryState === "swap") {
+            setBattleFactoryState("boss");
+            return;
+        }
         setApiLoading(true);
         loadNewPokemon(false);
         setBattleFactoryState("battle");
@@ -209,6 +214,14 @@ export function Home() {
                             nextBattle,
                             winStreak,
                         ]}
+                    />
+                </div>
+            )}
+            {battleFactoryState === "boss" && (
+                <div>
+                    <BossDisplay 
+                        winStreak={winStreak}
+                        nextBattle={nextBattle}
                     />
                 </div>
             )}
