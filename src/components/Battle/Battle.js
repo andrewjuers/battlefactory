@@ -121,10 +121,15 @@ export function Battle(props) {
         setHistory(history);
     }
 
-    let moves = props.playerPokemon[0].moveset.map((move, index) => {
+    let currentpoke = stepNumber >= history.length - 1 ? props.playerPokemon[0] : history[stepNumber].playerPokemon[0];
+    let moves = currentpoke.moveset.map((move, index) => {
         return (
             <div key={index}>
-                <Move move={move} onClick={nextTurn} />
+                <Move move={move} onClick={nextTurn} 
+                    attackerDefender={stepNumber >= history.length - 1
+                        ? [props.playerPokemon[0], props.opponentPokemon[0]]
+                        : [history[stepNumber].playerPokemon[0], history[stepNumber].opponentPokemon[0]]}
+                />
             </div>
         );
     });

@@ -8,6 +8,20 @@
     z-index: 100;
 }
 
+.move-info-div p {
+    margin: 0;
+    padding: 0.25em;
+}
+
+.damage-info-div {
+    padding-bottom: 0.25em;
+}
+
+.damage-info-div p {
+    margin: 0;
+    padding: 0.25em;
+}
+
 .move-button {
     width: 100px;
     height: 75px;
