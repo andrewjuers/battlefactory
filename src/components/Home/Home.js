@@ -35,12 +35,13 @@ export function Home() {
         }
         setPlayerPokemon(temp);
         setOpponentPokemon(dumb);
-        /// Update player team after loss
+        /// (Lose) reset playerPokemon and reset winStreak
         if (
             battleFactoryState === "teambuild" &&
             playerPokemon.length > 0
         ) {
             setPlayerPokemon([]);
+            setWinStreak(0);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [battleFactoryState]);
