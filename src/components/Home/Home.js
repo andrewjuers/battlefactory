@@ -2,7 +2,7 @@ import { Battle } from "components";
 import { TeamBuilder } from "components";
 import { PokemonSwap } from "components";
 import React, { useEffect, useState } from "react";
-import { baseStatTotalTo600, generateRandomPokemon, getGoodRandomMoveset, getMoveByName, getRandomInt, getRandomType, shuffle } from "shared";
+import { baseStatTotalTo600, generateRandomPokemon, getGoodRandomMoveset, getMoveByName, getPokemonByName, getRandomInt, getRandomType, shuffle, TRAINER_BLAKE } from "shared";
 import { hpCalc } from "shared";
 import { BANNED_MOVES, DEFAULT_MOVES } from "shared";
 
@@ -54,20 +54,31 @@ export function Home() {
             }
         }
         for (let i = 0; i < 3; i++) {
-            randomNewPokemon(opponentPokemon, i, setOpponentPokemon);
+            if (winStreak !== 6) randomNewPokemon(opponentPokemon, i, setOpponentPokemon);
+            else {
+                opponentPokemon[i] = getPokemonByName(TRAINER_BLAKE[i]);
+                getPokemonData(opponentPokemon, i, setOpponentPokemon);
+                createRandomMoveset(opponentPokemon, i, setOpponentPokemon);
+                setOpponentPokemon(opponentPokemon);
+            }
         }
         forceUpdate();
     }
 
     function randomNewPokemon(pokemonData, i, setFunc) {
         pokemonData[i] = generateRandomPokemon(pokemonData);
+        getPokemonData(pokemonData, i, setFunc);
+        createRandomMoveset(pokemonData, i, setFunc);
+        setFunc(pokemonData);
+    }
+    
+    function getPokemonData(pokemonData, i, setFunc) {
         pokemonData[i].base_stats = baseStatTotalTo600(pokemonData[i]);
         pokemonData[i].moveset = [{ name: "Tackle" }];
         pokemonData[i].hp = [
             hpCalc(pokemonData[i].base_stats[0]),
             hpCalc(pokemonData[i].base_stats[0]),
         ];
-        createRandomMoveset(pokemonData, i, setFunc);
         setFunc(pokemonData);
     }
 

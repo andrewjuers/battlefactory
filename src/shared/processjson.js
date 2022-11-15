@@ -16,3 +16,9 @@ export function getMoveById(id) {
 export function getPokemonById(id) {
     return structuredClone(pokedex[id]);
 }
+
+export function getPokemonByName(name) {
+    return structuredClone(pokedex.filter(poke => {
+        return poke.name === name;
+    })[0]);
+}

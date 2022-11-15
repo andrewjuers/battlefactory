@@ -144,11 +144,7 @@ export function Battle(props) {
                             <GameOverDisplay
                                 win={isVictory}
                                 onClick={props.setBattleFactoryState}
-                                winStreak={
-                                    isVictory
-                                        ? props.winStreak
-                                        : props.winStreak
-                                }
+                                winStreak={props.winStreak}
                             />
                         </div>
                     )}

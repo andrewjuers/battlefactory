@@ -11,3 +11,4 @@ export * from './pogey';
 export * from './randompokemon';
 export * from './computerpokemon';
 export * from './processjson';
+export * from './bosspokemon';
