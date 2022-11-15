@@ -35,13 +35,11 @@ export function Home() {
         }
         setPlayerPokemon(temp);
         setOpponentPokemon(dumb);
-        /// Update winstreak
-        if (battleFactoryState === "swap") setWinStreak(winStreak + 1);
-        else if (
+        /// Update player team after loss
+        if (
             battleFactoryState === "teambuild" &&
             playerPokemon.length > 0
         ) {
-            setWinStreak(0);
             setPlayerPokemon([]);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -183,6 +181,7 @@ export function Home() {
                         opponentPokemon={opponentPokemon}
                         setBattleFactoryState={setBattleFactoryState}
                         winStreak={winStreak}
+                        setWinStreak={setWinStreak}
                     />
                 </div>
             )}

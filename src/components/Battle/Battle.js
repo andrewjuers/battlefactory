@@ -43,6 +43,7 @@ export function Battle(props) {
             }
             if (!playing) {
                 setGameOver(true);
+                props.setWinStreak(0);
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -57,6 +58,7 @@ export function Battle(props) {
         updateTurnText(message);
         updateTurnText("Player2(CPU): GGWP!");
         setVictory(win);
+        props.setWinStreak(props.winStreak+1);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isGameOver]);
 
@@ -145,7 +147,7 @@ export function Battle(props) {
                                 onClick={props.setBattleFactoryState}
                                 winStreak={
                                     isVictory
-                                        ? props.winStreak + 1
+                                        ? props.winStreak
                                         : props.winStreak
                                 }
                             />
