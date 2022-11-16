@@ -1,24 +1,32 @@
 import pokedex from "shared/firstgenpokedex";
 import moves from "shared/allmoves";
 
+export const lodash = require("lodash");
+
 export function getMoveByName(name) {
-    return structuredClone(moves.filter(move => {
-        return move.name === name;
-    })[0]);
+    return lodash.cloneDeep(
+        moves.filter((move) => {
+            return move.name === name;
+        })[0]
+    );
 }
 
 export function getMoveById(id) {
-    return structuredClone(moves.filter(move => {
-        return move.id === id;
-    })[0]);
+    return lodash.cloneDeep(
+        moves.filter((move) => {
+            return move.id === id;
+        })[0]
+    );
 }
 
 export function getPokemonById(id) {
-    return structuredClone(pokedex[id]);
+    return lodash.cloneDeep(pokedex[id]);
 }
 
 export function getPokemonByName(name) {
-    return structuredClone(pokedex.filter(poke => {
-        return poke.name === name;
-    })[0]);
+    return lodash.cloneDeep(
+        pokedex.filter((poke) => {
+            return poke.name === name;
+        })[0]
+    );
 }

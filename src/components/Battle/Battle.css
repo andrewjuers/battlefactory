@@ -25,3 +25,7 @@
 .turn-feed {
     float: right;
 }
+
+.party-moves {
+    display: flex;
+}

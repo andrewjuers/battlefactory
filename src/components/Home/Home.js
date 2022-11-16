@@ -94,6 +94,7 @@ export function Home() {
     function createRandomMoveset(pokemonArr, index, setFunc) {
         let moves = [];
         let pokemon = pokemonArr[index];
+        /// Determine whether pokemon should use physical, special, or both categories of moves
         let diff = Math.abs(pokemon.base_stats[1] - pokemon.base_stats[3]);
         let attack =
             diff > 30 ||

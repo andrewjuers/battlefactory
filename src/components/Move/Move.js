@@ -51,6 +51,8 @@ export function Move(props) {
         percent_text = "(" + percent + "%)";
     }
 
+    let moveClassName = props.moveOwner === "party" ? "party-move" : "move-button";
+
     if (props.move.type === undefined) {
         return <div></div>;
     }
@@ -59,7 +61,7 @@ export function Move(props) {
         <div>
             <div className="move-div">
                 <button
-                    className="move-button"
+                    className={moveClassName}
                     id={props.move.type.name}
                     onClick={() => props.onClick(props.move)}
                     onMouseOver={(e) => {

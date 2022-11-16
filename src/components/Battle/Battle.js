@@ -4,7 +4,7 @@ import { Move } from "components";
 import { PokemonParty } from "components";
 import { TurnFeed } from "components";
 import { useEffect, useState } from "react";
-import { doSwitch, doTurn, switchPokemon } from "shared";
+import { doSwitch, doTurn, switchPokemon, lodash } from "shared";
 import "./Battle.css";
 
 export function Battle(props) {
@@ -14,8 +14,8 @@ export function Battle(props) {
     const [isVictory, setVictory] = useState(null);
     const [history, setHistory] = useState([
         {
-            playerPokemon: structuredClone(props.playerPokemon),
-            opponentPokemon: structuredClone(props.opponentPokemon),
+            playerPokemon: lodash.cloneDeep(props.playerPokemon),
+            opponentPokemon: lodash.cloneDeep(props.opponentPokemon),
         },
     ]);
     const [stepNumber, setStepNumber] = useState(0);
@@ -115,31 +115,65 @@ export function Battle(props) {
 
     function updateHistory() {
         history.push({
-            playerPokemon: structuredClone(props.playerPokemon),
-            opponentPokemon: structuredClone(props.opponentPokemon),
+            playerPokemon: lodash.cloneDeep(props.playerPokemon),
+            opponentPokemon: lodash.cloneDeep(props.opponentPokemon),
         });
         setStepNumber(history.length - 1);
         setHistory(history);
     }
 
-    let currentpokes = stepNumber >= history.length - 1 ? props.playerPokemon : history[stepNumber].playerPokemon;
-    let currentpoke = stepNumber >= history.length - 1 ? props.playerPokemon[0] : history[stepNumber].playerPokemon[0];
+    let displaypokes =
+        stepNumber >= history.length - 1
+            ? props.playerPokemon
+            : history[stepNumber].playerPokemon;
+    let currentpoke =
+        stepNumber >= history.length - 1
+            ? props.playerPokemon[0]
+            : history[stepNumber].playerPokemon[0];
     let moves = currentpoke.moveset.map((move, index) => {
         return (
             <div key={index}>
-                <Move move={move} onClick={nextTurn} 
-                    attackerDefender={stepNumber >= history.length - 1
-                        ? [props.playerPokemon[0], props.opponentPokemon[0]]
-                        : [history[stepNumber].playerPokemon[0], history[stepNumber].opponentPokemon[0]]}
+                <Move
+                    move={move}
+                    onClick={nextTurn}
+                    attackerDefender={
+                        stepNumber >= history.length - 1
+                            ? [props.playerPokemon[0], props.opponentPokemon[0]]
+                            : [
+                                  history[stepNumber].playerPokemon[0],
+                                  history[stepNumber].opponentPokemon[0],
+                              ]
+                    }
                     moveOwner="current"
                 />
             </div>
         );
     });
-
-    let partyMoves = []
-    for (const poke of [props.playerPokemon[1], props.playerPokemon[2]])
-
+    let partyMoves = [];
+    for (let i = 0; i < 2; i++) {
+        partyMoves[i] = displaypokes[i + 1].moveset.map((move, index) => {
+            return (
+                <div key={index}>
+                    <Move
+                        move={move}
+                        onClick={() => {}}
+                        attackerDefender={
+                            stepNumber >= history.length - 1
+                                ? [
+                                      props.playerPokemon[i + 1],
+                                      props.opponentPokemon[0],
+                                  ]
+                                : [
+                                      history[stepNumber].playerPokemon[i + 1],
+                                      history[stepNumber].opponentPokemon[0],
+                                  ]
+                        }
+                        moveOwner="party"
+                    />
+                </div>
+            );
+        });
+    }
     return (
         <div className="battle">
             <div className="pokemon-grid">
@@ -204,6 +238,7 @@ export function Battle(props) {
                         }
                         onClick={onSwitch}
                     />
+                    <div className="party-moves">{partyMoves[0]}&nbsp;&nbsp;&nbsp;{partyMoves[1]}</div>
                 </div>
                 <div></div>
             </div>

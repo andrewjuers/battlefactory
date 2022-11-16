@@ -36,6 +36,17 @@
     text-align: center;
 }
 
+.party-move {
+    width: 25px;
+    height: 25px;
+    outline: black solid 1px;
+    border-radius: 4px;
+}
+
+.party-move p {
+    display: none;
+}
+
 #fire {
     background-color: darkorange;
 }
