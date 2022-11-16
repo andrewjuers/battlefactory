@@ -1,10 +1,12 @@
+import { wait } from "@testing-library/user-event/dist/utils";
 import { CurrentPokemon } from "components";
 import { GameOverDisplay } from "components";
 import { Move } from "components";
 import { PokemonParty } from "components";
 import { TurnFeed } from "components";
+import { BattleAnnouncer } from "components";
 import { useEffect, useState } from "react";
-import { doSwitch, doTurn, switchPokemon, lodash } from "shared";
+import { doSwitch, doTurn, switchPokemon, lodash, arraysEqual } from "shared";
 import "./Battle.css";
 
 export function Battle(props) {
@@ -19,6 +21,8 @@ export function Battle(props) {
         },
     ]);
     const [stepNumber, setStepNumber] = useState(0);
+    const [announcerMessage, setAnnouncerMessage] = useState([]);
+    const [isAnimating, setAnimating] = useState(false);
 
     useEffect(() => {
         if (isForceSwitch === false) return;
@@ -61,7 +65,16 @@ export function Battle(props) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isGameOver]);
 
+    useEffect(() => {
+        (async () => {
+            setAnimating(true);
+            await wait(500);
+            setAnimating(false);
+        })();
+    }, [announcerMessage]);
+
     function nextTurn(move) {
+        if (isAnimating) return;
         if (stepNumber < history.length - 1) {
             alert("You are living in the past... Let's try that again...");
             setStepNumber(history.length - 1);
@@ -82,6 +95,8 @@ export function Battle(props) {
         let t = [...turns];
         t.push(text);
         setTurns(t);
+        if (arraysEqual(text, announcerMessage)) text.push(" (again lol)");
+        setAnnouncerMessage(text);
         if (
             props.playerPokemon[0].hp[0] === 0 ||
             props.opponentPokemon[0].hp[0] === 0
@@ -98,9 +113,11 @@ export function Battle(props) {
             return;
         }
         if (isForceSwitch) {
-            updateTurnText(doSwitch(props.playerPokemon, index));
+            let text = doSwitch(props.playerPokemon, index);
+            updateTurnText(text);
             setForceSwitch(false);
             updateHistory();
+            setAnnouncerMessage([text]);
         } else if (!isForceSwitch) {
             let move = { priority: 6, index: index };
             nextTurn(move);
@@ -238,9 +255,25 @@ export function Battle(props) {
                         }
                         onClick={onSwitch}
                     />
-                    <div className="party-moves">{partyMoves[0]}&nbsp;&nbsp;&nbsp;{partyMoves[1]}</div>
+                    <div className="party-moves">
+                        {partyMoves[0]}&nbsp;&nbsp;&nbsp;{partyMoves[1]}
+                    </div>
                 </div>
-                <div></div>
+                <div className="battle-announcer-parent">
+                    <div className="battle-announcer-child">
+                        {turns.length > 0 && (
+                            <div>
+                                <BattleAnnouncer
+                                    text={
+                                        stepNumber >= history.length - 1
+                                            ? announcerMessage
+                                            : (stepNumber === 0 ? [""] : turns[stepNumber-1])
+                                    }
+                                />
+                            </div>
+                        )}
+                    </div>
+                </div>
             </div>
             <div className="turn-feed">
                 <TurnFeed turns={turns} setStepNumber={setStepNumber} />
@@ -270,7 +303,7 @@ export function Battle(props) {
                     <button
                         onClick={() => {
                             if (stepNumber < history.length - 1)
-                                setStepNumber(history.length - 1);
+                                setStepNumber(history.length);
                         }}
                     >
                         &gt;&gt;|

@@ -25,7 +25,7 @@ export function Home() {
     const [selectedPokemon, setSelectedPokemon] = useState(null);
     const [playerPokemon, setPlayerPokemon] = useState([]);
     const [battleFactoryState, setBattleFactoryState] = useState("home");
-    const [winStreak, setWinStreak] = useState(12);
+    const [winStreak, setWinStreak] = useState(0);
     const [, updateState] = React.useState();
     const forceUpdate = React.useCallback(() => updateState({}), []);
 
@@ -63,7 +63,7 @@ export function Home() {
             }
         }
         for (let i = 0; i < 3; i++) {
-            if ((winStreak + 1) % 7 !== 0)
+            if ((winStreak + 1) % 7 !== 0 || winStreak >= 14)
                 randomNewPokemon(opponentPokemon, i, setOpponentPokemon);
             else {
                 if (winStreak === 6)

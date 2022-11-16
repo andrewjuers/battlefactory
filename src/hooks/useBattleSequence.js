@@ -1,5 +1,5 @@
-export function useBattleSequence() {
+export function useBattleSequence(sequence) {
 
-
+    
     return;
 }

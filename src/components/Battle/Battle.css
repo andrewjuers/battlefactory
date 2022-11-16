@@ -29,3 +29,18 @@
 .party-moves {
     display: flex;
 }
+
+.battle-announcer-parent {
+    width: 20em;
+    display: flex;
+    flex-direction: column;
+}
+
+.battle-announcer-child {
+    margin-top: auto;
+    margin-bottom: 6em;
+    min-height: 7em;
+    border-style: dashed;
+    background-color: aliceblue;
+    padding: 0.25em;
+}
