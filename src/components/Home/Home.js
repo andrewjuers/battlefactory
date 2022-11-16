@@ -12,6 +12,7 @@ import {
     getRandomInt,
     getRandomType,
     shuffle,
+    TRAINER_ALAZAR,
     TRAINER_BLAKE,
 } from "shared";
 import { hpCalc } from "shared";
@@ -24,7 +25,7 @@ export function Home() {
     const [selectedPokemon, setSelectedPokemon] = useState(null);
     const [playerPokemon, setPlayerPokemon] = useState([]);
     const [battleFactoryState, setBattleFactoryState] = useState("home");
-    const [winStreak, setWinStreak] = useState(0);
+    const [winStreak, setWinStreak] = useState(12);
     const [, updateState] = React.useState();
     const forceUpdate = React.useCallback(() => updateState({}), []);
 
@@ -62,10 +63,17 @@ export function Home() {
             }
         }
         for (let i = 0; i < 3; i++) {
-            if (winStreak !== 6)
+            if ((winStreak + 1) % 7 !== 0)
                 randomNewPokemon(opponentPokemon, i, setOpponentPokemon);
             else {
-                opponentPokemon[i] = getPokemonByName(TRAINER_BLAKE.pokemon[i]);
+                if (winStreak === 6)
+                    opponentPokemon[i] = getPokemonByName(
+                        TRAINER_BLAKE.pokemon[i]
+                    );
+                if (winStreak === 13)
+                    opponentPokemon[i] = getPokemonByName(
+                        TRAINER_ALAZAR.pokemon[i]
+                    );
                 getPokemonData(opponentPokemon, i, setOpponentPokemon);
                 createRandomMoveset(opponentPokemon, i, setOpponentPokemon);
                 setOpponentPokemon(opponentPokemon);
@@ -151,7 +159,7 @@ export function Home() {
     }
 
     function nextBattle() {
-        if (winStreak === 6 && battleFactoryState === "swap") {
+        if ((winStreak + 1) % 7 === 0 && battleFactoryState === "swap") {
             setBattleFactoryState("boss");
             return;
         }
