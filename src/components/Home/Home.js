@@ -3,7 +3,17 @@ import { TeamBuilder } from "components";
 import { PokemonSwap } from "components";
 import { BossDisplay } from "components";
 import React, { useEffect, useState } from "react";
-import { baseStatTotalTo600, generateRandomPokemon, getGoodRandomMoveset, getMoveByName, getPokemonByName, getRandomInt, getRandomType, shuffle, TRAINER_BLAKE } from "shared";
+import {
+    baseStatTotalTo600,
+    generateRandomPokemon,
+    getGoodRandomMoveset,
+    getMoveByName,
+    getPokemonByName,
+    getRandomInt,
+    getRandomType,
+    shuffle,
+    TRAINER_BLAKE,
+} from "shared";
 import { hpCalc } from "shared";
 import { BANNED_MOVES, DEFAULT_MOVES } from "shared";
 
@@ -37,10 +47,7 @@ export function Home() {
         setPlayerPokemon(temp);
         setOpponentPokemon(dumb);
         /// (Lose) reset playerPokemon and reset winStreak
-        if (
-            battleFactoryState === "home" &&
-            playerPokemon.length > 0
-        ) {
+        if (battleFactoryState === "home" && playerPokemon.length > 0) {
             setPlayerPokemon([]);
             setWinStreak(0);
         }
@@ -55,7 +62,8 @@ export function Home() {
             }
         }
         for (let i = 0; i < 3; i++) {
-            if (winStreak !== 6) randomNewPokemon(opponentPokemon, i, setOpponentPokemon);
+            if (winStreak !== 6)
+                randomNewPokemon(opponentPokemon, i, setOpponentPokemon);
             else {
                 opponentPokemon[i] = getPokemonByName(TRAINER_BLAKE.pokemon[i]);
                 getPokemonData(opponentPokemon, i, setOpponentPokemon);
@@ -72,7 +80,7 @@ export function Home() {
         createRandomMoveset(pokemonData, i, setFunc);
         setFunc(pokemonData);
     }
-    
+
     function getPokemonData(pokemonData, i, setFunc) {
         pokemonData[i].base_stats = baseStatTotalTo600(pokemonData[i]);
         pokemonData[i].moveset = [{ name: "Tackle" }];
@@ -87,8 +95,16 @@ export function Home() {
         let moves = [];
         let pokemon = pokemonArr[index];
         let diff = Math.abs(pokemon.base_stats[1] - pokemon.base_stats[3]);
-        let attack = (diff > 30 || !(pokemon.base_stats[1] > 75 && pokemon.base_stats[3] > 75) ? "attack" : null); 
-        if (attack !== null) attack = (pokemon.base_stats[1] > pokemon.base_stats[3] ? "physical" : "special")
+        let attack =
+            diff > 30 ||
+            !(pokemon.base_stats[1] > 75 && pokemon.base_stats[3] > 75)
+                ? "attack"
+                : null;
+        if (attack !== null)
+            attack =
+                pokemon.base_stats[1] > pokemon.base_stats[3]
+                    ? "physical"
+                    : "special";
         /// New move arr
         let newMoves = [];
         for (const move of pokemonArr[index].moves) {
@@ -98,9 +114,14 @@ export function Home() {
                 m.damage_class.name !== "status" &&
                 m.power &&
                 (m.power > 50 || m.priority > 0) &&
-                BANNED_MOVES.includes(m.name) === false 
+                BANNED_MOVES.includes(m.name) === false
             ) {
-               if (attack === null || m.damage_class.name === attack) moves.push(m);
+                if (
+                    attack === null ||
+                    m.damage_class.name === attack ||
+                    (m.priority > 0 && m.damage_class.name === "physical") /// for physical priority moves (& not vacuum wave lol)
+                )
+                    moves.push(m);
             }
         }
         /// update pokemon moves;
@@ -114,11 +135,13 @@ export function Home() {
             if (move.name === "hidden-power" || move.name === "secret-power") {
                 move.type.name = (" " + getRandomType()).slice(1);
                 move.power = 80;
-            }
-            else if (move.priority < 1) {
+            } else if (move.priority < 1) {
                 if (move.power < 75) move.power = 75;
                 if (move.power > 95) move.power = 95;
-                else if (move.name === "tri-attack") move.type.name = ["fire", "electric", "ice"][getRandomInt(3)];
+                else if (move.name === "tri-attack")
+                    move.type.name = ["fire", "electric", "ice"][
+                        getRandomInt(3)
+                    ];
             }
         }
         shuffle(moves);
@@ -148,7 +171,7 @@ export function Home() {
                     height: "100vh",
                 }}
             >
-                Loading the data... 
+                Loading the data...
             </div>
         );
     }
@@ -219,7 +242,7 @@ export function Home() {
             )}
             {battleFactoryState === "boss" && (
                 <div>
-                    <BossDisplay 
+                    <BossDisplay
                         winStreak={winStreak}
                         nextBattle={nextBattle}
                     />
