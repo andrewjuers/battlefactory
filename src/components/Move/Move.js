@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { damageCalc, pokemonNameToString } from "shared";
+import { capitalizeFirstLetter, damageCalc, pokemonNameToString } from "shared";
 import "./Move.css";
 
 export function Move(props) {
@@ -40,7 +40,7 @@ export function Move(props) {
         let damage = damageCalc(attack, defend, props.move);
         let percent = Math.round((damage / defend.hp[1]) * 1000) / 10;
         move_text =
-            props.move.name +
+            capitalizeFirstLetter(props.move.name) +
             " (" +
             props.move.power +
             "bp): " +
@@ -51,7 +51,8 @@ export function Move(props) {
         percent_text = "(" + percent + "%)";
     }
 
-    let moveClassName = props.moveOwner === "party" ? "party-move" : "move-button";
+    let moveClassName =
+        props.moveOwner === "party" ? "party-move" : "move-button";
 
     if (props.move.type === undefined) {
         return <div></div>;
@@ -71,14 +72,17 @@ export function Move(props) {
                         setStyle({ display: "none" });
                     }}
                 >
-                    <p>{props.move.name}</p>
-                    <p>{props.move.type.name}</p>
+                    <p>{capitalizeFirstLetter(props.move.name)}</p>
+                    <p>{capitalizeFirstLetter(props.move.type.name)}</p>
                 </button>
             </div>
             <div style={style}>
                 <div className="move-info-div">
                     <p>Power: {props.move.power}</p>
-                    <p>Damage Class: {props.move.damage_class.name}</p>
+                    <p>
+                        Damage Class:{" "}
+                        {capitalizeFirstLetter(props.move.damage_class.name)}
+                    </p>
                     <p>Priority: {props.move.priority}</p>
                     {/* <p>Accuracy: {props.move.accuracy}</p> */}
                     {/* <p>PP: {props.move.pp}</p>

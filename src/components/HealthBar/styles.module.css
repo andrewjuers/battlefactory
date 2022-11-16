@@ -3,9 +3,8 @@
     border-radius: 5px;
     gap: 5px;
     padding: 5px;
-    align-items: center;
     background-color: transparent;
-    width: 200px;
+    width: 150px;
 }
 
 .label {
@@ -13,8 +12,6 @@
     font-weight: bold;
     height: 35px;
     display: flex;
-    align-items: center;
-    justify-content: center;
     flex-basis: 50px;
     color: black;
 }

@@ -1,8 +1,7 @@
 import styles from "./styles.module.css";
 
-export const HealthBar = ({ value, maxValue, label="hp" }) => (
+export const HealthBar = ({ value, maxValue }) => (
     <div className={styles.main}>
-        <div className={styles.label}>{label}</div>
         <div className={styles.max}>
             <div
                 className={styles.value}

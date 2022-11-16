@@ -1,5 +1,6 @@
 import { makeMove } from "./computermove";
 import { damageCalc, typeEffectiveness } from "./damagecalc";
+import { capitalizeFirstLetter } from "./helpers";
 
 export function doTurn(playerPokemon, opponentPokemon, move) {
     let cpuMove = makeMove(playerPokemon, opponentPokemon);
@@ -55,9 +56,16 @@ export function playerTurn(playerPokemon, opponentPokemon, move) {
 }
 
 export function turnText(attacker, defender, move) {
-    let text = [attacker.name + " used " + move.name + "!"];
+    let text = [
+        capitalizeFirstLetter(attacker.name) +
+            " used " +
+            capitalizeFirstLetter(move.name) +
+            "!",
+    ];
     if (typeEffectiveness(move, defender) === 0) {
-        text.push("It doesnt't affect " + defender.name + "!");
+        text.push(
+            "It doesnt't affect " + capitalizeFirstLetter(defender.name) + "!"
+        );
     }
     if (
         typeEffectiveness(move, defender) > 0 &&
@@ -88,13 +96,13 @@ export function doAttack(attacker, defender, move) {
             ? [defender.hp[0] - damage, damage]
             : [0, defender.hp[0]];
     text.push(
-        defender.name +
+        capitalizeFirstLetter(defender.name) +
             " lost " +
             Math.round((damage_number / defender.hp[1]) * 1000) / 10 +
             "% HP!"
     );
     if (defender.hp[0] === 0) {
-        text.push(defender.name + " fainted!");
+        text.push(capitalizeFirstLetter(defender.name) + " fainted!");
     }
     return text;
 }
@@ -102,9 +110,10 @@ export function doAttack(attacker, defender, move) {
 export function doSwitch(pokemon, index) {
     let oldCurrent = pokemon[0];
     let text = "";
-    if (oldCurrent.hp[0] > 0) text = "Switch out " + oldCurrent.name + "! ";
+    if (oldCurrent.hp[0] > 0)
+        text = "Switch out " + capitalizeFirstLetter(oldCurrent.name) + "! ";
     pokemon[0] = pokemon[index];
     pokemon[index] = oldCurrent;
-    text = text + "Switch in " + pokemon[0].name + "!";
+    text = text + "Switch in " + capitalizeFirstLetter(pokemon[0].name) + "!";
     return text;
 }

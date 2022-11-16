@@ -10,10 +10,14 @@
 
 .hover-pokemon-div p {
     margin-bottom: 0;
-    margin-top: 0;
     margin-left: 0.5em;
+    margin-top: -0.3em;
 }
 
 .hover-pokemon-div-top {
     display: flex;
+}
+
+.hover-pokemon-div-top p {
+    margin-top: 0.3em;
 }

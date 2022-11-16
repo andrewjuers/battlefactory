@@ -8,11 +8,15 @@ export function BossDisplay(props) {
         " battles in a row! Now you must battle Trainer Blake!";
     let img = TRAINER_BLAKE.img;
 
+    let trainer_text = TRAINER_BLAKE.text.map((t, i) => {
+        return <h1 key={i}>{t}</h1>;
+    });
+
     return (
         <div className="boss-display-div">
-            <h2>{text}</h2>
+            <h3>{text}</h3>
             <img src={img} alt="Blake"></img>
-            <h1>{TRAINER_BLAKE.text}</h1>
+            <h2>{trainer_text}</h2>
             <button onClick={() => props.nextBattle()}>Fight!</button>
         </div>
     );

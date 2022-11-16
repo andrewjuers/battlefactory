@@ -12,7 +12,7 @@ export function HoverPokemonData(props) {
     return (
         <div className="hover-pokemon-div">
             <div className="hover-pokemon-div-top">
-                <p>{pokemonNameToString(props.pokemon)}</p>
+                <p>{pokemonNameToString(props.pokemon)} &nbsp; hp: {props.pokemon.hp[0]}/{props.pokemon.hp[1]}</p>
                 <HealthBar
                     label=""
                     value={props.pokemon.hp[0]}
