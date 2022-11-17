@@ -101,8 +101,44 @@ export function doAttack(attacker, defender, move) {
             Math.round((damage_number / defender.hp[1]) * 1000) / 10 +
             "% HP!"
     );
+    console.log(move);
+    if (move.meta.drain > 0 && attacker.hp[0] < attacker.hp[1]) { // Drain hp (giga-drain, drain-punch)
+        let hpNumber = 0;
+        [hpNumber, attacker.hp[0]] =
+            attacker.hp[0] + Math.floor(damage_number / 2) > attacker.hp[1]
+                ? [attacker.hp[1] - attacker.hp[0], attacker.hp[1]]
+                : [
+                      Math.floor(damage_number / 2),
+                      attacker.hp[0] + damage_number,
+                  ];
+        text.push(
+            capitalizeFirstLetter(attacker.name) +
+                " healed " +
+                Math.round((hpNumber / attacker.hp[1]) * 1000) / 10 +
+                "% HP!"
+        );
+    }
+    else if (move.meta.drain < 0) {
+        let hpNumber = 0;
+        [hpNumber, attacker.hp[0]] =
+            attacker.hp[0] - Math.floor(damage_number * (Math.abs(move.meta.drain) / 100)) <= 0
+                ? [attacker.hp[0], 0]
+                : [
+                    Math.floor(damage_number * (Math.abs(move.meta.drain) / 100)),
+                      attacker.hp[0] - Math.floor(damage_number * (Math.abs(move.meta.drain) / 100)),
+                  ];
+        text.push(
+            capitalizeFirstLetter(attacker.name) +
+                " lost " +
+                Math.round((hpNumber / attacker.hp[1]) * 1000) / 10 +
+                "% HP to recoil!"
+        );
+    }
     if (defender.hp[0] === 0) {
         text.push(capitalizeFirstLetter(defender.name) + " fainted!");
+    }
+    if (attacker.hp[0] === 0) {
+        text.push(capitalizeFirstLetter(attacker.name) + " fainted!");
     }
     return text;
 }

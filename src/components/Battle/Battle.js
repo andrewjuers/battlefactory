@@ -212,7 +212,7 @@ export function Battle(props) {
                         <div>
                             <h2>
                                 Turn{" "}
-                                {stepNumber >= history.length - 1
+                                {stepNumber > history.length - 1
                                     ? turns.length
                                     : stepNumber + 1}
                             </h2>
@@ -244,12 +244,12 @@ export function Battle(props) {
                 <div className="player">
                     <CurrentPokemon
                         pokemon={
-                            stepNumber >= history.length - 1
+                            stepNumber > history.length - 1
                                 ? props.playerPokemon[0]
                                 : history[stepNumber].playerPokemon[0]
                         }
                         img={
-                            stepNumber >= history.length - 1
+                            stepNumber > history.length - 1
                                 ? props.playerPokemon[0].sprites.back_default
                                 : history[stepNumber].playerPokemon[0].sprites
                                       .back_default
@@ -258,7 +258,7 @@ export function Battle(props) {
                     <div className="pokemon-moves">{moves}</div>
                     <PokemonParty
                         pokemon={
-                            stepNumber >= history.length - 1
+                            stepNumber > history.length - 1
                                 ? props.playerPokemon
                                 : history[stepNumber].playerPokemon
                         }
@@ -274,7 +274,7 @@ export function Battle(props) {
                             <div>
                                 <BattleAnnouncer
                                     text={
-                                        stepNumber >= history.length - 1
+                                        stepNumber > history.length - 1
                                             ? turns[turns.length - 1]
                                             : turns[stepNumber - 1]
                                     }
@@ -303,7 +303,7 @@ export function Battle(props) {
                     </button>
                     <button
                         onClick={() => {
-                            if (stepNumber < history.length - 1)
+                            if (stepNumber < history.length)
                                 setStepNumber(stepNumber + 1);
                         }}
                     >
@@ -311,7 +311,7 @@ export function Battle(props) {
                     </button>
                     <button
                         onClick={() => {
-                            if (stepNumber < history.length - 1)
+                            if (stepNumber < history.length)
                                 setStepNumber(history.length);
                         }}
                     >

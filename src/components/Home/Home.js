@@ -146,7 +146,7 @@ export function Home() {
                 move.power = 80;
             } else if (move.priority < 1) {
                 if (move.power < 75) move.power = 75;
-                if (move.power > 95) move.power = 95;
+                if (move.power > 95 && move.meta.drain >= 0) move.power = 95; // Buff recoil moves
                 else if (move.name === "tri-attack")
                     move.type.name = ["fire", "electric", "ice"][
                         getRandomInt(3)
