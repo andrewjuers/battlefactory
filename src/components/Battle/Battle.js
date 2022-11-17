@@ -68,10 +68,10 @@ export function Battle(props) {
     useEffect(() => {
         (async () => {
             setAnimating(true);
-            await wait(500);
+            await wait(1000);
             setAnimating(false);
         })();
-    }, [announcerMessage]);
+    }, [announcerMessage, turns]);
 
     function nextTurn(move) {
         if (isAnimating) return;
@@ -105,6 +105,10 @@ export function Battle(props) {
         else {
             updateHistory();
         }
+        (async () => {
+            setAnimating(true);
+            await wait(1000);
+        })();
     }
 
     function onSwitch(index) {
@@ -206,7 +210,12 @@ export function Battle(props) {
                     )}
                     {!isGameOver && (
                         <div>
-                            <h2>Turn {stepNumber + 1}</h2>
+                            <h2>
+                                Turn{" "}
+                                {stepNumber >= history.length - 1
+                                    ? turns.length
+                                    : stepNumber + 1}
+                            </h2>
                         </div>
                     )}
                 </div>
@@ -267,7 +276,9 @@ export function Battle(props) {
                                     text={
                                         stepNumber >= history.length - 1
                                             ? announcerMessage
-                                            : (stepNumber === 0 ? [""] : turns[stepNumber-1])
+                                            : stepNumber === 0
+                                            ? [""]
+                                            : turns[stepNumber - 1]
                                     }
                                 />
                             </div>
