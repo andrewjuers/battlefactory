@@ -270,14 +270,12 @@ export function Battle(props) {
                 </div>
                 <div className="battle-announcer-parent">
                     <div className="battle-announcer-child">
-                        {turns.length > 0 && (
+                        {turns.length > 0 && stepNumber > 0 && (
                             <div>
                                 <BattleAnnouncer
                                     text={
                                         stepNumber >= history.length - 1
-                                            ? announcerMessage
-                                            : stepNumber === 0
-                                            ? [""]
+                                            ? turns[turns.length - 1]
                                             : turns[stepNumber - 1]
                                     }
                                 />
