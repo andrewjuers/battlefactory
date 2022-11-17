@@ -101,8 +101,7 @@ export function doAttack(attacker, defender, move) {
             Math.round((damage_number / defender.hp[1]) * 1000) / 10 +
             "% HP!"
     );
-    console.log(move);
-    if (move.meta.drain > 0 && attacker.hp[0] < attacker.hp[1]) { // Drain hp (giga-drain, drain-punch)
+    if (attacker.hp[0] < attacker.hp[1] && move.meta !== undefined && move.meta.drain > 0) { // Drain hp (giga-drain, drain-punch)
         let hpNumber = 0;
         [hpNumber, attacker.hp[0]] =
             attacker.hp[0] + Math.floor(damage_number / 2) > attacker.hp[1]

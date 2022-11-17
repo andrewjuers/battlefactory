@@ -73,6 +73,18 @@ export function Battle(props) {
         })();
     }, [announcerMessage, turns]);
 
+    useEffect(() => {
+        if (stepNumber >= history.length - 1 && announcerMessage.length === 1) return;
+        if (turns.length > 0 && stepNumber > 0) {
+            setAnnouncerMessage(
+                stepNumber > history.length - 1
+                    ? turns[turns.length - 1]
+                    : turns[stepNumber - 1]
+            );
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [stepNumber]);
+
     function nextTurn(move) {
         if (isAnimating) return;
         if (stepNumber < history.length - 1) {
@@ -143,14 +155,13 @@ export function Battle(props) {
         setHistory(history);
     }
 
-    let displaypokes =
-        stepNumber >= history.length - 1
-            ? props.playerPokemon
-            : history[stepNumber].playerPokemon;
-    let currentpoke =
-        stepNumber >= history.length - 1
-            ? props.playerPokemon[0]
-            : history[stepNumber].playerPokemon[0];
+    let isCurrent = stepNumber >= history.length - 1;
+    let displaypokes = isCurrent
+        ? props.playerPokemon
+        : history[stepNumber].playerPokemon;
+    let currentpoke = isCurrent
+        ? props.playerPokemon[0]
+        : history[stepNumber].playerPokemon[0];
     let moves = currentpoke.moveset.map((move, index) => {
         return (
             <div key={index}>
@@ -158,7 +169,7 @@ export function Battle(props) {
                     move={move}
                     onClick={nextTurn}
                     attackerDefender={
-                        stepNumber >= history.length - 1
+                        isCurrent
                             ? [props.playerPokemon[0], props.opponentPokemon[0]]
                             : [
                                   history[stepNumber].playerPokemon[0],
@@ -172,28 +183,33 @@ export function Battle(props) {
     });
     let partyMoves = [];
     for (let i = 0; i < 2; i++) {
-        partyMoves[i] = displaypokes[i + 1].moveset.map((move, index) => {
-            return (
-                <div key={index}>
-                    <Move
-                        move={move}
-                        onClick={() => {}}
-                        attackerDefender={
-                            stepNumber >= history.length - 1
-                                ? [
-                                      props.playerPokemon[i + 1],
-                                      props.opponentPokemon[0],
-                                  ]
-                                : [
-                                      history[stepNumber].playerPokemon[i + 1],
-                                      history[stepNumber].opponentPokemon[0],
-                                  ]
-                        }
-                        moveOwner="party"
-                    />
-                </div>
-            );
-        });
+        partyMoves[i] = displaypokes[i + 1].moveset.map(
+            (move, index) => {
+                return (
+                    <div key={index}>
+                        <Move
+                            move={move}
+                            onClick={() => {}}
+                            attackerDefender={
+                                isCurrent
+                                    ? [
+                                          props.playerPokemon[i + 1],
+                                          props.opponentPokemon[0],
+                                      ]
+                                    : [
+                                          history[stepNumber].playerPokemon[
+                                              i + 1
+                                          ],
+                                          history[stepNumber]
+                                              .opponentPokemon[0],
+                                      ]
+                            }
+                            moveOwner="party"
+                        />
+                    </div>
+                );
+            }
+        );
     }
     return (
         <div className="battle">
@@ -244,12 +260,12 @@ export function Battle(props) {
                 <div className="player">
                     <CurrentPokemon
                         pokemon={
-                            stepNumber > history.length - 1
+                            stepNumber >= history.length - 1
                                 ? props.playerPokemon[0]
                                 : history[stepNumber].playerPokemon[0]
                         }
                         img={
-                            stepNumber > history.length - 1
+                            stepNumber >= history.length - 1
                                 ? props.playerPokemon[0].sprites.back_default
                                 : history[stepNumber].playerPokemon[0].sprites
                                       .back_default
@@ -258,7 +274,7 @@ export function Battle(props) {
                     <div className="pokemon-moves">{moves}</div>
                     <PokemonParty
                         pokemon={
-                            stepNumber > history.length - 1
+                            stepNumber >= history.length - 1
                                 ? props.playerPokemon
                                 : history[stepNumber].playerPokemon
                         }
@@ -272,13 +288,7 @@ export function Battle(props) {
                     <div className="battle-announcer-child">
                         {turns.length > 0 && stepNumber > 0 && (
                             <div>
-                                <BattleAnnouncer
-                                    text={
-                                        stepNumber > history.length - 1
-                                            ? turns[turns.length - 1]
-                                            : turns[stepNumber - 1]
-                                    }
-                                />
+                                <BattleAnnouncer text={announcerMessage} />
                             </div>
                         )}
                     </div>
