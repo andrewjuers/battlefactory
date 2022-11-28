@@ -42,6 +42,7 @@ export const BANNED_MOVES = [
     "headbutt", // butthead
     "vice-grip", // crabs
     "take-down", // too many, mabye unban and buff?
+    "horn-attack", // just no
 ];
 
 export const GOOD_MOVES = [

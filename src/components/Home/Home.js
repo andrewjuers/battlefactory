@@ -1,7 +1,4 @@
-import { Battle } from "components";
-import { TeamBuilder } from "components";
-import { PokemonSwap } from "components";
-import { BossDisplay } from "components";
+import { Battle, TeamBuilder, PokemonSwap, BossDisplay } from "components";
 import React, { useEffect, useState } from "react";
 import {
     baseStatTotalTo600,
@@ -14,9 +11,10 @@ import {
     shuffle,
     TRAINER_ALAZAR,
     TRAINER_BLAKE,
+    hpCalc,
+    BANNED_MOVES,
+    DEFAULT_MOVES,
 } from "shared";
-import { hpCalc } from "shared";
-import { BANNED_MOVES, DEFAULT_MOVES } from "shared";
 
 const BATTLE_ROUNDS = 4;
 
@@ -149,10 +147,11 @@ export function Home() {
             if (move.name === "hidden-power" || move.name === "secret-power") {
                 move.type.name = (" " + getRandomType()).slice(1);
                 move.power = 80;
-            } else if (move.priority < 1) {
+            } else if (move.name === "submission") move.power = 120;
+            else if (move.priority === 0) {
                 if (move.power < 75) move.power = 75;
                 if (move.power > 95 && move.meta.drain >= 0)
-                    move.power = 95; // Buff recoil moves
+                    move.power = 95; // Buff stat lowering moves
                 else if (move.name === "tri-attack")
                     move.type.name = ["fire", "electric", "ice"][
                         getRandomInt(3)
@@ -269,5 +268,3 @@ export function Home() {
         </div>
     );
 }
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////^^^^

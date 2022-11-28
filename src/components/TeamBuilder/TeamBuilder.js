@@ -1,6 +1,5 @@
-import { PokemonOptions } from "components";
+import { PokemonOptions, SelectedPokemon } from "components";
 import "./TeamBuilder.css";
-import { SelectedPokemon } from "components";
 
 export function TeamBuilder(props) {
     const [
@@ -51,14 +50,14 @@ export function TeamBuilder(props) {
                 )}
             </div>
             <div className="teambuilder-row">
-                Pick 3: 
+                Pick 3:
                 <PokemonOptions
                     pokemon={pokemonOptions}
                     onClick={setSelectedPokemon}
                 />
             </div>
             <div className="teambuilder-row">
-                Your Team: 
+                Your Team:
                 <PokemonOptions
                     pokemon={playerPokemon}
                     onClick={setSelectedPokemon}
@@ -77,8 +76,11 @@ export function TeamBuilder(props) {
                 {playerPokemon.length < 3 && (
                     <button
                         onClick={() => {
-                            loadNewPokemon()
-                        }}>REROLL!!!</button>
+                            loadNewPokemon();
+                        }}
+                    >
+                        REROLL!!!
+                    </button>
                 )}
             </div>
         </div>

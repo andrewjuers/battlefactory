@@ -1,6 +1,5 @@
 import "./PokemonSwap.css";
-import { SelectedPokemon } from "components";
-import { PokemonOptions } from "components";
+import { SelectedPokemon, PokemonOptions } from "components";
 import { useEffect, useState } from "react";
 
 export function PokemonSwap(props) {
@@ -20,7 +19,7 @@ export function PokemonSwap(props) {
 
     useEffect(() => {
         setSwapSelection();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedPokemon]);
 
     function setSwapSelection() {
@@ -47,11 +46,12 @@ export function PokemonSwap(props) {
     return (
         <div className="pokemon-swap">
             <div className="pokemon-swap-row">
-            <h2>Pokemon Swap  -  Win Streak: {winStreak}</h2>
+                <h2>Pokemon Swap - Win Streak: {winStreak}</h2>
                 {selectedPokemon && (
                     <div>
                         <SelectedPokemon pokemon={selectedPokemon} />
-                        <button className="complete-swap-button"
+                        <button
+                            className="complete-swap-button"
                             onClick={() => {
                                 setComplete(true);
                             }}
@@ -69,7 +69,8 @@ export function PokemonSwap(props) {
                 />
             </div>
             <div className="pokemon-swap-row">
-                <PokemonOptions className="pokemonOptions"
+                <PokemonOptions
+                    className="pokemonOptions"
                     pokemon={playerPokemon}
                     onClick={setSelectedPokemon}
                     selectedPokemon={playerSwap}
@@ -85,10 +86,20 @@ export function PokemonSwap(props) {
                 )}
                 {isComplete && (
                     <div>
-                        <button onClick={() => {completeSwap()}}>
+                        <button
+                            onClick={() => {
+                                completeSwap();
+                            }}
+                        >
                             Yes, complete swap and start battle!
                         </button>
-                        <button onClick={() => {setComplete(false)}}>Nooo I changed my mind!</button>
+                        <button
+                            onClick={() => {
+                                setComplete(false);
+                            }}
+                        >
+                            Nooo I changed my mind!
+                        </button>
                     </div>
                 )}
             </div>

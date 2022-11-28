@@ -1,12 +1,20 @@
-import { wait } from "@testing-library/user-event/dist/utils";
-import { CurrentPokemon } from "components";
-import { GameOverDisplay } from "components";
-import { Move } from "components";
-import { PokemonParty } from "components";
-import { TurnFeed } from "components";
-import { BattleAnnouncer } from "components";
+import {
+    CurrentPokemon,
+    GameOverDisplay,
+    Move,
+    PokemonParty,
+    TurnFeed,
+    BattleAnnouncer,
+} from "components";
 import { useEffect, useState } from "react";
-import { doSwitch, doTurn, switchPokemon, lodash, arraysEqual } from "shared";
+import {
+    doSwitch,
+    doTurn,
+    switchPokemon,
+    lodash,
+    arraysEqual,
+    wait,
+} from "shared";
 import "./Battle.css";
 
 export function Battle(props) {

@@ -19,6 +19,7 @@ export function damageCalc(attacker, defender, move) {
             : [attacker.base_stats[3], defender.base_stats[4]];
     if (move.name === "psyshock") defense = defender.base_stats[2]; // Psyshock
     if (move.name === "body-press") attack = attacker.base_stats[2]; // Body-press
+    if (move.name === "foul-play") attack = defender.base_stats[1]; // Foul-play
     attack = statCalc(attack);
     defense = statCalc(defense);
     let power = move.priority < 0 ? move.power * 2 : move.power; // Double power of negative priority moves
