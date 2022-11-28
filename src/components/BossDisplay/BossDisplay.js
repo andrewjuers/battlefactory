@@ -3,7 +3,7 @@ import "./BossDisplay.css";
 
 export function BossDisplay(props) {
 
-    let trainer = props.winStreak === 6 ? TRAINER_BLAKE : TRAINER_ALAZAR;
+    let trainer = props.winStreak === 9 ? TRAINER_BLAKE : TRAINER_ALAZAR;
 
     let text =
         "You won " +
@@ -12,14 +12,14 @@ export function BossDisplay(props) {
     let img = trainer.img;
 
     let trainer_text = trainer.text.map((t, i) => {
-        return <h1 key={i}>{t}</h1>;
+        return <h2 key={i}>{t}</h2>;
     });
 
     return (
         <div className="boss-display-div">
             <h3>{text}</h3>
             <img src={img} alt={trainer.name}></img>
-            <h2>{trainer_text}</h2>
+            {trainer_text}
             <button onClick={() => props.nextBattle()}>Fight!</button>
         </div>
     );

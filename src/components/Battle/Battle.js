@@ -26,36 +26,23 @@ export function Battle(props) {
 
     useEffect(() => {
         if (isForceSwitch === false) return;
-        if (props.opponentPokemon[0].hp[0] <= 0) {
-            let switch_index = switchPokemon(
-                props.playerPokemon,
-                props.opponentPokemon
-            );
-            if (switch_index === -1) {
-                setGameOver(true);
-                updateHistory();
-                return;
-            }
-            updateTurnText(doSwitch(props.opponentPokemon, switch_index));
-            setForceSwitch(false);
-            updateHistory();
-        }
-        if (props.playerPokemon[0].hp[0] === 0) {
-            let playing = false;
-            for (const poke of props.playerPokemon) {
-                if (poke.hp[0] > 0) playing = true;
-            }
-            if (!playing) {
-                setGameOver(true);
-            }
-        }
+        if (
+            props.opponentPokemon[0].hp[0] <= 0 &&
+            props.playerPokemon[0].hp[0] > 0
+        )
+            forcedSwitch(props.opponentPokemon, -1);
+        if (props.playerPokemon.filter((poke) => poke.hp[0] > 0).length === 0)
+            setGameOver(true);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isForceSwitch]);
 
     useEffect(() => {
+        /// Game is over
         if (!isGameOver || isVictory !== null) return;
+        let isOppAlive =
+            props.opponentPokemon.filter((poke) => poke.hp[0] > 0).length > 0; /// currently player wins on recoil doublekill both last pokemon
         let [message, win] =
-            props.playerPokemon[0].hp[0] === 0
+            props.playerPokemon[0].hp[0] === 0 && isOppAlive
                 ? ["You Lose!", false]
                 : ["You Win!", true];
         updateTurnText(message);
@@ -66,20 +53,27 @@ export function Battle(props) {
     }, [isGameOver]);
 
     useEffect(() => {
+        /// wait after move
         (async () => {
             setAnimating(true);
-            await wait(1000);
+            await wait(500);
             setAnimating(false);
         })();
     }, [announcerMessage, turns]);
 
     useEffect(() => {
-        if (stepNumber >= history.length - 1 && announcerMessage.length === 1) return;
+        // Update announcer message
+        if (
+            stepNumber >= history.length &&
+            announcerMessage !== undefined &&
+            announcerMessage.length === 1
+        )
+            return;
         if (turns.length > 0 && stepNumber > 0) {
             setAnnouncerMessage(
-                stepNumber > history.length - 1
-                    ? turns[turns.length - 1]
-                    : turns[stepNumber - 1]
+                stepNumber < history.length
+                    ? turns[stepNumber - 1]
+                    : turns[turns.length - 1]
             );
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -112,15 +106,37 @@ export function Battle(props) {
         if (
             props.playerPokemon[0].hp[0] === 0 ||
             props.opponentPokemon[0].hp[0] === 0
-        )
+        ) {
             setForceSwitch(true);
-        else {
-            updateHistory();
-        }
+            if (props.playerPokemon[0].hp[0] === 0)
+                setStepNumber(stepNumber + 1);
+        } else updateHistory();
+
         (async () => {
             setAnimating(true);
             await wait(1000);
         })();
+    }
+
+    function forcedSwitch(pokemonArr, index, playerType = "cpu") {
+        let switch_index =
+            playerType === "cpu"
+                ? switchPokemon(props.playerPokemon, props.opponentPokemon)
+                : index;
+        if (switch_index === -1 && playerType === "cpu") {
+            setGameOver(true);
+            updateHistory();
+            return;
+        }
+        setForceSwitch(false);
+        let text = doSwitch(pokemonArr, switch_index);
+        updateTurnText(text);
+        if (playerType === "player") {
+            setAnnouncerMessage([text]);
+        }
+        if (playerType === "player" && props.opponentPokemon[0].hp[0] === 0)
+            return forcedSwitch(props.opponentPokemon, -1);
+        updateHistory();
     }
 
     function onSwitch(index) {
@@ -129,11 +145,7 @@ export function Battle(props) {
             return;
         }
         if (isForceSwitch) {
-            let text = doSwitch(props.playerPokemon, index);
-            updateTurnText(text);
-            setForceSwitch(false);
-            updateHistory();
-            setAnnouncerMessage([text]);
+            forcedSwitch(props.playerPokemon, index, "player");
         } else if (!isForceSwitch) {
             let move = { priority: 6, index: index };
             nextTurn(move);
@@ -155,7 +167,7 @@ export function Battle(props) {
         setHistory(history);
     }
 
-    let isCurrent = stepNumber >= history.length - 1;
+    let isCurrent = !(stepNumber < history.length);
     let displaypokes = isCurrent
         ? props.playerPokemon
         : history[stepNumber].playerPokemon;
@@ -183,33 +195,28 @@ export function Battle(props) {
     });
     let partyMoves = [];
     for (let i = 0; i < 2; i++) {
-        partyMoves[i] = displaypokes[i + 1].moveset.map(
-            (move, index) => {
-                return (
-                    <div key={index}>
-                        <Move
-                            move={move}
-                            onClick={() => {}}
-                            attackerDefender={
-                                isCurrent
-                                    ? [
-                                          props.playerPokemon[i + 1],
-                                          props.opponentPokemon[0],
-                                      ]
-                                    : [
-                                          history[stepNumber].playerPokemon[
-                                              i + 1
-                                          ],
-                                          history[stepNumber]
-                                              .opponentPokemon[0],
-                                      ]
-                            }
-                            moveOwner="party"
-                        />
-                    </div>
-                );
-            }
-        );
+        partyMoves[i] = displaypokes[i + 1].moveset.map((move, index) => {
+            return (
+                <div key={index}>
+                    <Move
+                        move={move}
+                        onClick={() => {}}
+                        attackerDefender={
+                            isCurrent
+                                ? [
+                                      props.playerPokemon[i + 1],
+                                      props.opponentPokemon[0],
+                                  ]
+                                : [
+                                      history[stepNumber].playerPokemon[i + 1],
+                                      history[stepNumber].opponentPokemon[0],
+                                  ]
+                        }
+                        moveOwner="party"
+                    />
+                </div>
+            );
+        });
     }
     return (
         <div className="battle">
@@ -227,10 +234,7 @@ export function Battle(props) {
                     {!isGameOver && (
                         <div>
                             <h2>
-                                Turn{" "}
-                                {stepNumber > history.length - 1
-                                    ? turns.length
-                                    : stepNumber + 1}
+                                Turn {isCurrent ? turns.length : stepNumber}
                             </h2>
                         </div>
                     )}
@@ -238,19 +242,19 @@ export function Battle(props) {
                 <div className="opponent">
                     <PokemonParty
                         pokemon={
-                            stepNumber >= history.length - 1
+                            isCurrent
                                 ? props.opponentPokemon
                                 : history[stepNumber].opponentPokemon
                         }
                     />
                     <CurrentPokemon
                         pokemon={
-                            stepNumber >= history.length - 1
+                            isCurrent
                                 ? props.opponentPokemon[0]
                                 : history[stepNumber].opponentPokemon[0]
                         }
                         img={
-                            stepNumber >= history.length - 1
+                            isCurrent
                                 ? props.opponentPokemon[0].sprites.front_default
                                 : history[stepNumber].opponentPokemon[0].sprites
                                       .front_default
@@ -260,12 +264,12 @@ export function Battle(props) {
                 <div className="player">
                     <CurrentPokemon
                         pokemon={
-                            stepNumber >= history.length - 1
+                            isCurrent
                                 ? props.playerPokemon[0]
                                 : history[stepNumber].playerPokemon[0]
                         }
                         img={
-                            stepNumber >= history.length - 1
+                            isCurrent
                                 ? props.playerPokemon[0].sprites.back_default
                                 : history[stepNumber].playerPokemon[0].sprites
                                       .back_default
@@ -274,7 +278,7 @@ export function Battle(props) {
                     <div className="pokemon-moves">{moves}</div>
                     <PokemonParty
                         pokemon={
-                            stepNumber >= history.length - 1
+                            isCurrent
                                 ? props.playerPokemon
                                 : history[stepNumber].playerPokemon
                         }

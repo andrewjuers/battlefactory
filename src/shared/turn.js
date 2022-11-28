@@ -62,6 +62,11 @@ export function turnText(attacker, defender, move) {
             capitalizeFirstLetter(move.name) +
             "!",
     ];
+    if (defender.hp[0] <= 0) {
+        // attempt to stop turn when mon dies to recoil
+        text.push("But it failed!");
+        return text;
+    }
     if (typeEffectiveness(move, defender) === 0) {
         text.push(
             "It doesnt't affect " + capitalizeFirstLetter(defender.name) + "!"
@@ -101,31 +106,56 @@ export function doAttack(attacker, defender, move) {
             Math.round((damage_number / defender.hp[1]) * 1000) / 10 +
             "% HP!"
     );
-    if (attacker.hp[0] < attacker.hp[1] && move.meta !== undefined && move.meta.drain > 0) { // Drain hp (giga-drain, drain-punch)
+    if (
+        attacker.hp[0] < attacker.hp[1] &&
+        move.meta !== undefined &&
+        move.meta.drain > 0
+    ) {
+        // Drain hp (giga-drain, drain-punch)
         let hpNumber = 0;
         [hpNumber, attacker.hp[0]] =
-            attacker.hp[0] + Math.floor(damage_number / 2) > attacker.hp[1]
+            attacker.hp[0] +
+                Math.floor(damage_number * (Math.abs(move.meta.drain) / 100)) >
+            attacker.hp[1]
                 ? [attacker.hp[1] - attacker.hp[0], attacker.hp[1]]
                 : [
-                      Math.floor(damage_number / 2),
-                      attacker.hp[0] + damage_number,
+                      Math.floor(
+                          damage_number * (Math.abs(move.meta.drain) / 100)
+                      ),
+                      attacker.hp[0] + Math.abs(move.meta.drain) / 100,
                   ];
+        if (attacker.hp[0] > attacker.hp[1]) attacker.hp[0] = attacker.hp[1];
+        if (hpNumber === 0) {
+            hpNumber = 1;
+            attacker.hp[0] = attacker.hp[0] + hpNumber;
+        }
         text.push(
             capitalizeFirstLetter(attacker.name) +
                 " healed " +
                 Math.round((hpNumber / attacker.hp[1]) * 1000) / 10 +
                 "% HP!"
         );
-    }
-    else if (move.meta.drain < 0) {
+    } else if (move.meta !== undefined && move.meta.drain < 0) {
+        // Recoil
         let hpNumber = 0;
         [hpNumber, attacker.hp[0]] =
-            attacker.hp[0] - Math.floor(damage_number * (Math.abs(move.meta.drain) / 100)) <= 0
+            attacker.hp[0] -
+                Math.floor(damage_number * (Math.abs(move.meta.drain) / 100)) <=
+            0
                 ? [attacker.hp[0], 0]
                 : [
-                    Math.floor(damage_number * (Math.abs(move.meta.drain) / 100)),
-                      attacker.hp[0] - Math.floor(damage_number * (Math.abs(move.meta.drain) / 100)),
+                      Math.floor(
+                          damage_number * (Math.abs(move.meta.drain) / 100)
+                      ),
+                      attacker.hp[0] -
+                          Math.floor(
+                              damage_number * (Math.abs(move.meta.drain) / 100)
+                          ),
                   ];
+        if (hpNumber === 0) {
+            hpNumber = 1;
+            attacker.hp[0] = attacker.hp[0] - hpNumber;
+        }
         text.push(
             capitalizeFirstLetter(attacker.name) +
                 " lost " +

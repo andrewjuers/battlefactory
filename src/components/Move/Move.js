@@ -77,7 +77,7 @@ export function Move(props) {
                 </button>
             </div>
             <div style={style}>
-                <div className="move-info-div">
+                <div className="move-info-div" id={props.moveOwner}>
                     <p>Power: {props.move.power}</p>
                     <p>
                         Damage Class:{" "}

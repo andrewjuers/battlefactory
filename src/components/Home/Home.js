@@ -18,6 +18,8 @@ import {
 import { hpCalc } from "shared";
 import { BANNED_MOVES, DEFAULT_MOVES } from "shared";
 
+const BATTLE_ROUNDS = 4;
+
 export function Home() {
     const [isApiLoading, setApiLoading] = useState(true);
     const [pokemonOptions, setPokemonOptions] = useState([]);
@@ -63,16 +65,19 @@ export function Home() {
             }
         }
         for (let i = 0; i < 3; i++) {
-            if ((winStreak + 1) % 7 !== 0 || winStreak >= 14)
+            if (
+                (winStreak + 1) % (BATTLE_ROUNDS + 1) !== 0 ||
+                winStreak >= (BATTLE_ROUNDS + 1) * 2
+            )
                 randomNewPokemon(opponentPokemon, i, setOpponentPokemon);
             else {
-                if (winStreak === 6)
-                    opponentPokemon[i] = getPokemonByName(
-                        TRAINER_BLAKE.pokemon[i]
-                    );
-                if (winStreak === 13)
+                if (winStreak === BATTLE_ROUNDS)
                     opponentPokemon[i] = getPokemonByName(
                         TRAINER_ALAZAR.pokemon[i]
+                    );
+                if (winStreak === BATTLE_ROUNDS * 2 + 1)
+                    opponentPokemon[i] = getPokemonByName(
+                        TRAINER_BLAKE.pokemon[i]
                     );
                 getPokemonData(opponentPokemon, i, setOpponentPokemon);
                 createRandomMoveset(opponentPokemon, i, setOpponentPokemon);
@@ -146,7 +151,8 @@ export function Home() {
                 move.power = 80;
             } else if (move.priority < 1) {
                 if (move.power < 75) move.power = 75;
-                if (move.power > 95 && move.meta.drain >= 0) move.power = 95; // Buff recoil moves
+                if (move.power > 95 && move.meta.drain >= 0)
+                    move.power = 95; // Buff recoil moves
                 else if (move.name === "tri-attack")
                     move.type.name = ["fire", "electric", "ice"][
                         getRandomInt(3)
@@ -159,7 +165,10 @@ export function Home() {
     }
 
     function nextBattle() {
-        if ((winStreak + 1) % 7 === 0 && battleFactoryState === "swap") {
+        if (
+            (winStreak + 1) % (BATTLE_ROUNDS + 1) === 0 &&
+            battleFactoryState === "swap"
+        ) {
             setBattleFactoryState("boss");
             return;
         }

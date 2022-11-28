@@ -47,6 +47,11 @@
     display: none;
 }
 
+#party {
+    margin-top: -25vh;
+    /* margin-bottom: 25em; */
+}
+
 #fire {
     background-color: darkorange;
 }
