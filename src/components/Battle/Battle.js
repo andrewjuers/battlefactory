@@ -62,11 +62,7 @@ export function Battle(props) {
 
     useEffect(() => {
         /// wait after move
-        (async () => {
-            setAnimating(true);
-            await wait(500);
-            setAnimating(false);
-        })();
+        setAnimating(false);
     }, [announcerMessage, turns]);
 
     useEffect(() => {
@@ -122,7 +118,7 @@ export function Battle(props) {
 
         (async () => {
             setAnimating(true);
-            await wait(1000);
+            await wait(100);
         })();
     }
 
