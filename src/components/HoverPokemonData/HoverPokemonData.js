@@ -1,6 +1,10 @@
 import { HealthBar } from "components/HealthBar";
 import { StatsDisplay } from "components/StatsDisplay";
-import { pokemonNameToString, pokemonTypeToString } from "shared";
+import {
+    capitalizeFirstLetter,
+    pokemonNameToString,
+    pokemonTypeToString,
+} from "shared";
 import "./HoverPokemonData.css";
 
 export function HoverPokemonData(props) {
@@ -9,10 +13,37 @@ export function HoverPokemonData(props) {
         abilities.push(props.pokemon.abilities[i].ability.name + " ");
     }
 
+    const stat_names = [
+        "attack",
+        "defense",
+        "special-attack",
+        "special-defense",
+        "speed",
+    ];
+    let stat_levels = "";
+    for (let i=0; i<props.pokemon.stat_levels.length; i++) {
+        let level = props.pokemon.stat_levels[i];
+        if (level !== 0) {
+            let symbol = level < 0 ? "" : "+";
+            stat_levels =
+                stat_levels +
+                capitalizeFirstLetter(
+                    stat_names[i]
+                ) +
+                " (" +
+                symbol +
+                level +
+                ") ";
+        }
+    }
+
     return (
         <div className="hover-pokemon-div">
             <div className="hover-pokemon-div-top">
-                <p>{pokemonNameToString(props.pokemon)} &nbsp; hp: {props.pokemon.hp[0]}/{props.pokemon.hp[1]}</p>
+                <p>
+                    {pokemonNameToString(props.pokemon)} &nbsp; hp:{" "}
+                    {props.pokemon.hp[0]}/{props.pokemon.hp[1]}
+                </p>
                 <HealthBar
                     label=""
                     value={props.pokemon.hp[0]}
@@ -23,6 +54,11 @@ export function HoverPokemonData(props) {
             {/* <p>Abilities: {abilities}</p>
             <p>Weight: {props.pokemon.weight}</p> */}
             <StatsDisplay pokemon={props.pokemon} />
+            {props.pokemon.hp[0] > 0 && stat_levels.length > 0 && (
+                <div>
+                    <p>{stat_levels}</p>
+                </div>
+            )}
         </div>
     );
 }

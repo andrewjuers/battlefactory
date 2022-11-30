@@ -54,6 +54,18 @@ export function Move(props) {
     let moveClassName =
         props.moveOwner === "party" ? "party-move" : "move-button";
 
+    let effect_text = props.move.flavor_text_entries.filter((entry) => {
+        if (entry.language === undefined || entry.language.name === undefined)
+            return true;
+        return entry.language.name === "en";
+    })[0].flavor_text;
+
+    if (props.move.meta === undefined) { /// temporary error fix
+        console.log("CHECK THIS!!! ERROR WITH: ");
+        console.log(props.move);
+        return;
+    }
+
     if (props.move.type === undefined) {
         return <div></div>;
     }
@@ -84,6 +96,11 @@ export function Move(props) {
                         {capitalizeFirstLetter(props.move.damage_class.name)}
                     </p>
                     <p>Priority: {props.move.priority}</p>
+
+                    {(props.move.meta.stat_chance === 100 ||
+                        props.move.meta.drain !== 0) && (
+                        <p>Description: {effect_text}</p>
+                    )}
                     {/* <p>Accuracy: {props.move.accuracy}</p> */}
                     {/* <p>PP: {props.move.pp}</p>
                     <p>

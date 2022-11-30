@@ -1,13 +1,13 @@
 import { makeMove } from "./computermove";
-import { damageCalc, typeEffectiveness } from "./damagecalc";
-import { capitalizeFirstLetter } from "./helpers";
+import { damageCalc, statCalc, typeEffectiveness } from "./damagecalc";
+import { capitalizeFirstLetter, pokemonNameToString } from "./helpers";
 
 export function doTurn(playerPokemon, opponentPokemon, move) {
     let cpuMove = makeMove(playerPokemon, opponentPokemon);
     let movefirst = move.priority > cpuMove.priority ? true : false;
     if (move.priority === cpuMove.priority) {
         movefirst =
-            playerPokemon[0].base_stats[5] > opponentPokemon[0].base_stats[5]
+            statCalc(playerPokemon[0].base_stats[5], playerPokemon[0].stat_levels[4]) > statCalc(opponentPokemon[0].base_stats[5], opponentPokemon[0].stat_levels[4])
                 ? true
                 : false;
     }
@@ -46,11 +46,16 @@ export function playerTurn(playerPokemon, opponentPokemon, move) {
             text,
             turnText(playerPokemon[0], opponentPokemon[0], move)
         );
-        if (typeEffectiveness(move, opponentPokemon[0]) !== 0)
+        if (typeEffectiveness(move, opponentPokemon[0]) !== 0) {
             text = addArrayToArray(
                 text,
                 doAttack(playerPokemon[0], opponentPokemon[0], move)
             );
+            text = addArrayToArray(
+                text,
+                doMoveEffects(playerPokemon[0], opponentPokemon[0], move)
+            );
+        }
     }
     return text;
 }
@@ -174,11 +179,76 @@ export function doAttack(attacker, defender, move) {
 
 export function doSwitch(pokemon, index) {
     let oldCurrent = pokemon[0];
+    resetStatChanges(oldCurrent); // Reset stat changes on switch out
     let text = "";
     if (oldCurrent.hp[0] > 0)
         text = "Switch out " + capitalizeFirstLetter(oldCurrent.name) + "! ";
     pokemon[0] = pokemon[index];
     pokemon[index] = oldCurrent;
     text = text + "Switch in " + capitalizeFirstLetter(pokemon[0].name) + "!";
+    resetStatChanges(pokemon); // Reset stat changes on switch in
     return text;
+}
+
+export function doMoveEffects(attacker, defender, move) {
+    let text = [];
+    if (
+        attacker.hp[0] > 0 &&
+        move.meta.stat_chance === 100 &&
+        move.meta.category.name === "damage+raise"
+    ) {
+        addArrayToArray(text, doStatChanges(attacker, move));
+    }
+    if (
+        defender.hp[0] > 0 &&
+        move.meta.stat_chance === 100 &&
+        move.meta.category.name === "damage+lower"
+    ) {
+        addArrayToArray(text, doStatChanges(defender, move));
+    }
+    return text;
+}
+
+export function doStatChanges(pokemon, move) {
+    let texts = [];
+    const stat_names = [
+        "attack",
+        "defense",
+        "special-attack",
+        "special-defense",
+        "speed",
+    ];
+    for (const stat of move.stat_changes) {
+        let text = "";
+        const stat_index = stat_names.indexOf(stat.stat.name);
+        pokemon.stat_levels[stat_index] =
+            pokemon.stat_levels[stat_index] + stat.change;
+        let change = stat.change < 0 ? " lowered!" : " raised!";
+        text =
+            pokemonNameToString(pokemon) +
+            " had it's " +
+            capitalizeFirstLetter(stat_names[stat_index]) +
+            change;
+        if (pokemon.stat_levels[stat_index] < -6) {
+            pokemon.stat_levels[stat_index] = -6;
+            text =
+                pokemonNameToString(pokemon) +
+                "'s " +
+                capitalizeFirstLetter(stat_names[stat_index]) +
+                " can't go lower!";
+        } else if (pokemon.stat_levels[stat_index] > 6) {
+            pokemon.stat_levels[stat_index] = 6;
+            text =
+                pokemonNameToString(pokemon) +
+                "'s " +
+                capitalizeFirstLetter(stat_names[stat_index]) +
+                " can't go higher!";
+        }
+        texts.push(text);
+    }
+    return texts;
+}
+
+export function resetStatChanges(pokemon) {
+    pokemon.stat_changes = Array(5).fill(0);
 }

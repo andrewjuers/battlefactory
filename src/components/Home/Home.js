@@ -43,7 +43,10 @@ export function Home() {
         /// Pokemon Center :)
         let [temp, dumb] = [[...playerPokemon], [...opponentPokemon]];
         for (const arr of [temp, dumb]) {
-            for (const poke of arr) poke.hp[0] = poke.hp[1];
+            for (const poke of arr) {
+                poke.hp[0] = poke.hp[1];
+                poke.stat_levels = Array(5).fill(0);
+            }
         }
         setPlayerPokemon(temp);
         setOpponentPokemon(dumb);
@@ -99,6 +102,7 @@ export function Home() {
             hpCalc(pokemonData[i].base_stats[0]),
             hpCalc(pokemonData[i].base_stats[0]),
         ];
+        pokemonData[i].stat_levels = Array(5).fill(0);
         setFunc(pokemonData);
     }
 
@@ -139,18 +143,22 @@ export function Home() {
         /// update pokemon moves;
         pokemonArr[index].moves_data = newMoves;
         if (moves.length < 4) {
-            let choices = [...DEFAULT_MOVES];
+            let choices = DEFAULT_MOVES.map((m) => {
+                return getMoveByName(m.name); // Load the default moves
+            });
             shuffle(choices);
             moves = [...moves, ...choices];
         }
-        for (const move of moves) {
+        for (let move of moves) {
             if (move.name === "hidden-power" || move.name === "secret-power") {
                 move.type.name = (" " + getRandomType()).slice(1);
                 move.power = 80;
-            } else if (move.name === "submission") move.power = 120;
-            else if (move.priority === 0) {
+            } else if (move.meta.drain < 0)
+                move.power =
+                    move.power > 120 || move.name === "volt-tackle" ? 150 : 120;
+            else if (move.priority === 0 && move.meta.stat_chance !== 100) {
                 if (move.power < 75) move.power = 75;
-                if (move.power > 95 && move.meta.drain >= 0)
+                if (move.power > 95)
                     move.power = 95; // Buff stat lowering moves
                 else if (move.name === "tri-attack")
                     move.type.name = ["fire", "electric", "ice"][
