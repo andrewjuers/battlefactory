@@ -7,7 +7,14 @@ export function doTurn(playerPokemon, opponentPokemon, move) {
     let movefirst = move.priority > cpuMove.priority ? true : false;
     if (move.priority === cpuMove.priority) {
         movefirst =
-            statCalc(playerPokemon[0].base_stats[5], playerPokemon[0].stat_levels[4]) > statCalc(opponentPokemon[0].base_stats[5], opponentPokemon[0].stat_levels[4])
+            statCalc(
+                playerPokemon[0].base_stats[5],
+                playerPokemon[0].stat_levels[4]
+            ) >
+            statCalc(
+                opponentPokemon[0].base_stats[5],
+                opponentPokemon[0].stat_levels[4]
+            )
                 ? true
                 : false;
     }
@@ -99,6 +106,7 @@ export function addArrayToArray(arr1, arr2) {
 
 export function doAttack(attacker, defender, move) {
     let text = [];
+    if (defender.hp[0] <= 0) return text; // attempt to stop turn when mon dies to recoil
     let damage = damageCalc(attacker, defender, move);
     let damage_number = 0; /// changed to 0 from null
     [defender.hp[0], damage_number] =
@@ -127,7 +135,10 @@ export function doAttack(attacker, defender, move) {
                       Math.floor(
                           damage_number * (Math.abs(move.meta.drain) / 100)
                       ),
-                      attacker.hp[0] + Math.abs(move.meta.drain) / 100,
+                      attacker.hp[0] +
+                          Math.floor(
+                              (damage_number * Math.abs(move.meta.drain)) / 100
+                          ),
                   ];
         if (attacker.hp[0] > attacker.hp[1]) attacker.hp[0] = attacker.hp[1];
         if (hpNumber === 0) {
