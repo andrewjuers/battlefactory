@@ -1,6 +1,6 @@
 import { PogeyData } from "./pogey";
-import { getPokemonById } from "./processjson";
-import pokedex from "shared/firstgenpokedex";
+import { getPokemonById, getMoveByName } from "./processjson";
+import pokedex from "shared/thirdgenpokedex";
 import { shuffle } from "shared";
 import { DEFAULT_MOVES } from "./legalmoves";
 
@@ -16,7 +16,7 @@ export function generateRandomPokemon(pokemonTeam) {
 }
 
 export function generateRandomPokemonId() {
-    return Math.floor(Math.random() * 151);
+    return Math.floor(Math.random() * 386);
 }
 
 export function getPokemonName(data) {
@@ -98,7 +98,8 @@ export function getGoodRandomMoveset(moves) {
         shuffle(choices);
         moveset = [...moveset, ...choices.slice(0, 4 - moveset.length)];
     }
-    for (const move of moveset) {
+    for (let move of moveset) {
+        if (move.meta === undefined) move = getMoveByName(move.name);
         if (move.name === "hidden-power" || move.name === "secret-power") {
             move.type.name = (" " + getRandomType()).slice(1);
             move.power = 80;

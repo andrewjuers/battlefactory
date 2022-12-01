@@ -1,4 +1,4 @@
-import pokedex from "shared/firstgenpokedex";
+import pokedex from "shared/thirdgenpokedex";
 import moves from "shared/allmoves";
 
 export const lodash = require("lodash");
