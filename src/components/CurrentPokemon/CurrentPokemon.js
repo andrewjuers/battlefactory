@@ -19,7 +19,7 @@ export function CurrentPokemon(props) {
                     value={props.pokemon.hp[0]}
                     maxValue={props.pokemon.hp[1]}
                 />
-                <img
+                <img id={props.pokemon.hp[0] > 0 ? "" : "fainted-current-pokemon"}
                     src={props.img}
                     alt=""
                     onMouseOver={() => {

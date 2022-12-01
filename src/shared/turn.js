@@ -58,10 +58,12 @@ export function playerTurn(playerPokemon, opponentPokemon, move) {
                 text,
                 doAttack(playerPokemon[0], opponentPokemon[0], move)
             );
-            text = addArrayToArray(
-                text,
-                doMoveEffects(playerPokemon[0], opponentPokemon[0], move)
-            );
+            /// temporary fix for moves giving me errors
+            if (move.meta !== undefined)
+                text = addArrayToArray(
+                    text,
+                    doMoveEffects(playerPokemon[0], opponentPokemon[0], move)
+                );
         }
     }
     return text;

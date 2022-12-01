@@ -89,7 +89,7 @@ export function Move(props) {
                 </button>
             </div>
             <div style={style}>
-                <div className="move-info-div" id={props.moveOwner}>
+                <div className="move-info-div" id={props.moveOwner === "party" ? (props.move.meta.stat_chance === 100 || props.move.meta.drain !== 0 ? "party-extra-space" : "party") : ""}>
                     <p>Power: {props.move.power}</p>
                     <p>
                         Damage Class:{" "}

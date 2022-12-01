@@ -1,3 +1,7 @@
 .current-pokemon-div {
     display: flex;
 }
+
+#fainted-current-pokemon {
+    opacity: 50%;
+}
