@@ -60,7 +60,8 @@ export function Move(props) {
         return entry.language.name === "en";
     })[0].flavor_text;
 
-    if (props.move.meta === undefined) { /// temporary error fix
+    if (props.move.meta === undefined) {
+        /// temporary error fix
         console.log("CHECK THIS!!! ERROR WITH: ");
         console.log(props.move);
         return;
@@ -89,7 +90,17 @@ export function Move(props) {
                 </button>
             </div>
             <div style={style}>
-                <div className="move-info-div" id={props.moveOwner === "party" ? (props.move.meta.stat_chance === 100 || props.move.meta.drain !== 0 ? "party-extra-space" : "party") : ""}>
+                <div
+                    className="move-info-div"
+                    id={
+                        props.moveOwner === "party"
+                            ? props.move.meta.stat_chance === 100 ||
+                              props.move.meta.drain !== 0
+                                ? "party-extra-space"
+                                : "party"
+                            : ""
+                    }
+                >
                     <p>Power: {props.move.power}</p>
                     <p>
                         Damage Class:{" "}
@@ -98,7 +109,9 @@ export function Move(props) {
                     <p>Priority: {props.move.priority}</p>
 
                     {(props.move.meta.stat_chance === 100 ||
-                        props.move.meta.drain !== 0) && (
+                        props.move.meta.drain !== 0 ||
+                        props.move.name === "explosion" ||
+                        props.move.name === "self-destruct") && (
                         <p>Description: {effect_text}</p>
                     )}
                     {/* <p>Accuracy: {props.move.accuracy}</p> */}

@@ -24,8 +24,8 @@ export const BANNED_MOVES = [
     "steel-beam",
     "round",
     "future-sight", /// For now
-    "explosion",
-    "self-destruct",
+    // "explosion",
+    // "self-destruct",
     "covet", /// Bad move, maybe buff/make useful
     "swift",
     "bubble-beam", /// snorlax??

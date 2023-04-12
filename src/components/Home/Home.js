@@ -153,13 +153,17 @@ export function Home() {
             if (move.name === "hidden-power" || move.name === "secret-power") {
                 move.type.name = (" " + getRandomType()).slice(1);
                 move.power = 80;
+            } else if (
+                move.name === "explosion" ||
+                move.name === "self-destruct"
+            ) {
+                // Do nothing
             } else if (move.meta.drain < 0)
                 move.power =
                     move.power > 120 || move.name === "volt-tackle" ? 150 : 120;
             else if (move.priority === 0 && move.meta.stat_chance !== 100) {
                 if (move.power < 75) move.power = 75;
-                if (move.power > 95)
-                    move.power = 95; // Buff stat lowering moves
+                if (move.power > 95) move.power = 95;
                 else if (move.name === "tri-attack")
                     move.type.name = ["fire", "electric", "ice"][
                         getRandomInt(3)
@@ -174,6 +178,7 @@ export function Home() {
     function nextBattle() {
         if (
             (winStreak + 1) % (BATTLE_ROUNDS + 1) === 0 &&
+            winStreak < 10 && // no third boss yet
             battleFactoryState === "swap"
         ) {
             setBattleFactoryState("boss");

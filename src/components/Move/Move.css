@@ -10,7 +10,7 @@
 
 .move-info-div p {
     margin: 0;
-    padding: 0.25em;
+    padding: 0.25vh;
 }
 
 .damage-info-div {
@@ -23,8 +23,9 @@
 }
 
 .move-button {
-    width: 100px;
-    height: 75px;
+    min-width: 6rem;
+    width: 5.5vw;
+    height: 6em;
     font-weight: bold;
     font-size: 12px;
     outline: black solid 1px;

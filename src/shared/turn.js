@@ -180,6 +180,9 @@ export function doAttack(attacker, defender, move) {
                 Math.round((hpNumber / attacker.hp[1]) * 1000) / 10 +
                 "% HP to recoil!"
         );
+    } else if (move.name === "explosion" || move.name === "self-destruct") {
+        attacker.hp[0] = 0;
+        text.push(capitalizeFirstLetter(attacker.name) + " blew up!");
     }
     if (defender.hp[0] === 0) {
         text.push(capitalizeFirstLetter(defender.name) + " fainted!");

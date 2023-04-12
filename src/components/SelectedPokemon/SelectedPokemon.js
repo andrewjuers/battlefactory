@@ -34,7 +34,7 @@ export function SelectedPokemon(props) {
             <div>
                 {moves !== null && (
                     <div className="selected-pokemon-row">
-                        <p> MOVES: </p>
+                        <p className="moves-p"> MOVES: </p>
                         {moves}
                     </div>
                 )}
