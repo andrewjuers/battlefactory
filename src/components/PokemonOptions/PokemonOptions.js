@@ -1,4 +1,5 @@
 import { PokemonOption } from "components";
+import React from "react";
 import './PokemonOptions.css';
 
 export function PokemonOptions(props) {

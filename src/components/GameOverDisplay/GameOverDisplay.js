@@ -1,4 +1,5 @@
 import './GameOverDisplay.css';
+import React from 'react';
 
 export function GameOverDisplay(props) {
 

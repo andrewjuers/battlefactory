@@ -1,6 +1,7 @@
 import { TurnDetails } from 'components/TurnDetails';
 import ScrollableFeed from 'react-scrollable-feed';
 import './TurnFeed.css';
+import React from 'react';
 
 export function TurnFeed(props) {
 

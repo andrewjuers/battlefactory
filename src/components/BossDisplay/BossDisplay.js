@@ -1,4 +1,5 @@
 import { TRAINER_ALAZAR, TRAINER_BLAKE } from "shared";
+import React from "react";
 import "./BossDisplay.css";
 
 export function BossDisplay(props) {

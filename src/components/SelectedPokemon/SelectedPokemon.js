@@ -1,6 +1,7 @@
 import { Move } from "components";
 import { StatsDisplay } from "components/StatsDisplay";
 import { pokemonNameToString, pokemonTypeToString } from "shared";
+import React from "react";
 import "./SelectedPokemon.css";
 
 export function SelectedPokemon(props) {

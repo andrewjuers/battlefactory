@@ -1,5 +1,5 @@
 import { HoverPokemonData } from "components/HoverPokemonData";
-import { useState } from "react";
+import React, { useState } from "react";
 import "./PokemonPartyMember.css";
 
 export function PokemonPartyMember(props) {

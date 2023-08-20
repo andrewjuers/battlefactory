@@ -1,4 +1,5 @@
 import { useTypedMessage } from "hooks";
+import React from "react";
 
 export function BattleAnnouncer(props) {
     let message = "";

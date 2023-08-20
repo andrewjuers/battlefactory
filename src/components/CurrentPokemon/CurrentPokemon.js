@@ -1,6 +1,6 @@
 import { HealthBar } from "components";
 import { HoverPokemonData } from "components";
-import { useState } from "react";
+import React, { useState } from "react";
 import { pokemonNameToString, pokemonTypeToString } from "shared";
 import "./CurrentPokemon.css";
 

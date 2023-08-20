@@ -1,5 +1,6 @@
 import './StatsDisplay.css';
 import CanvasJSReact from '../CanvasJs/canvasjs.react';
+import React from 'react';
 
 
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;

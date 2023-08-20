@@ -1,4 +1,5 @@
 import { PokemonOptions, SelectedPokemon } from "components";
+import React from "react";
 import "./TeamBuilder.css";
 
 export function TeamBuilder(props) {

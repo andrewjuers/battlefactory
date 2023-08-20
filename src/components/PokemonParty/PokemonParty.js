@@ -1,5 +1,6 @@
 import { PokemonPartyMember } from "components/PokemonPartyMember";
 import './PokemonParty.css';
+import React from "react";
 
 export function PokemonParty(props) {
 

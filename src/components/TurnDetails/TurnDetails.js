@@ -1,4 +1,5 @@
 import './TurnDetails.css';
+import React from 'react';
 
 export function TurnDetails(props) {
 

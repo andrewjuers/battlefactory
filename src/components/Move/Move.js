@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { capitalizeFirstLetter, damageCalc, pokemonNameToString } from "shared";
 import "./Move.css";
 

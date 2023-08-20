@@ -5,6 +5,7 @@ import {
     pokemonNameToString,
     pokemonTypeToString,
 } from "shared";
+import React from "react";
 import "./HoverPokemonData.css";
 
 export function HoverPokemonData(props) {
